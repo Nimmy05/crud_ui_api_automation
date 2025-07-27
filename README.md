@@ -66,9 +66,8 @@ Includes both **positive and negative** test cases.
 1. Clone the repository
 
 ```bash
-git clone https://github.com/promise-dash/MERN_Todo_App.git
-cd MERN_Todo_App
-
+git clone https://github.com/Nimmy05/crud_ui_api_automation.git
+cd crud_ui_api_automation/MERN_Todo_App
    
 2. Install dependencies:
 For the client (React app):
