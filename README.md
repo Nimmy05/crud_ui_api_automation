@@ -13,7 +13,7 @@ To showcase real-world quality assurance skills, this app includes **automated t
 - 🔒 Protected routes for authenticated users only.
 - 🔁 Optional WebSocket integration for real-time updates.
 - 🧪 Automated UI tests (Playwright).
-- 🧪 Automated API tests (Postman/RESR API).
+- 🧪 Automated API tests (Postman/REST API).
 
 ---
 
@@ -25,8 +25,8 @@ To showcase real-world quality assurance skills, this app includes **automated t
 | Backend       | Node.js + Express  |
 | Database      | MongoDB (Mongoose) |
 | Auth          | JWT                |
-| UI Testing    | Playwright or Cypress |
-| API Testing   | Postman / Newman or Supertest |
+| UI Testing    | Playwright |
+| API Testing   | Postman / REST API |
 | Dev Tools     | VS Code, Git, GitHub |
 
 ---
