@@ -1,65 +1,54 @@
 # ✅ MERN Todo App with Automated UI & API Testing
 
-This project is a full-stack Todo application built with the **MERN** stack: MongoDB, Express.js, React.js, and Node.js. It features robust authentication and allows users to create, read, update, and delete (CRUD) todo items.
+This project is a full-stack Todo application built with the **MERN** stack: **MongoDB**, **Express.js**, **React.js**, and **Node.js**. It supports secure login and full CRUD functionality for managing todo items.
 
-To showcase real-world quality assurance skills, this app includes **automated tests** for both the frontend and backend, covering UI interactions and API endpoints.
+To demonstrate QA automation skills, this app includes **Playwright-based UI tests** and **API tests** for verifying both frontend and backend functionality.
 
 ---
 
 ## 🚀 Features
 
 - 🔐 User registration and login with JWT-based authentication.
-- ✅ Full CRUD functionality for managing todos.
+- ✅ CRUD functionality for todo items.
 - 🔒 Protected routes for authenticated users only.
 - 🔁 Optional WebSocket integration for real-time updates.
-- 🧪 Automated UI tests (Playwright).
-- 🧪 Automated API tests (Postman/REST API).
+- 🧪 UI automation with Playwright.
+- 🧪 API testing with Postman or Supertest.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer         | Technology         |
-|---------------|--------------------|
-| Frontend      | React.js           |
-| Backend       | Node.js + Express  |
-| Database      | MongoDB (Mongoose) |
-| Auth          | JWT                |
-| UI Testing    | Playwright |
-| API Testing   | Postman / REST API |
-| Dev Tools     | VS Code, Git, GitHub |
+| Layer         | Technology               |
+|---------------|--------------------------|
+| Frontend      | React.js                 |
+| Backend       | Node.js + Express.js     |
+| Database      | MongoDB (Mongoose)       |
+| Auth          | JWT                      |
+| UI Testing    | Playwright               |
+| API Testing   | Postman / Newman / Supertest |
+| Dev Tools     | Git, GitHub, VS Code     |
 
 ---
 
-## 🧪 Automated Testing
+## 📂 Project Structure
 
-### ✅ UI Automation
-- Login (valid and invalid)
-- Create a todo
-- Edit a todo
-- Delete a todo
-- UI validation for data updates
+```bash
+crud_ui_api_automation/
+└── MERN_Todo_App/
+    ├── client/               # React frontend
+    │   ├── public/
+    │   ├── src/
+    │   ├── tests/            # Playwright tests
+    │   ├── playwright.config.ts
+    │   └── ...
+    ├── server/               # Node.js + Express backend
+    │   ├── controllers/
+    │   ├── models/
+    │   ├── routes/
+    │   └── ...
+    └── README.md
 
-### ✅ API Testing
-| Endpoint       | Description                |
-|----------------|----------------------------|
-| `POST /login`  | Login with user credentials |
-| `GET /todos`   | Fetch list of todos         |
-| `POST /todos`  | Create a new todo           |
-| `PUT /todos/:id` | Update existing todo      |
-| `DELETE /todos/:id` | Delete a todo          |
-
-Includes both **positive and negative** test cases.
-
----
-
-## ⚙️ Prerequisites
-
-- [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/)
-- Git
-
----
 
 ## 🧭 Getting Started
 
@@ -70,13 +59,13 @@ git clone https://github.com/Nimmy05/crud_ui_api_automation.git
 cd crud_ui_api_automation/MERN_Todo_App
    
 2. Install dependencies:
-For the client (React app):
+Frontend (client):
 
  ```bash
    cd client
    npm install
 
-For the server (Node + Express API):
+Backend (server):
 
  ```bash
    cd ../server
@@ -91,8 +80,9 @@ For the server (Node + Express API):
    MONGODB_URI=<your-mongodb-uri>
    JWT_SECRET_KEY=<your-jwt-secret>
  
-4. Start MongoDB locally or connect to MongoDB 
-Then run backend:
+4.Start the Aplication
+Start MongoDB locally or connect to MongoDB 
+Backend:
 
    ```bash
    cd server
@@ -105,15 +95,50 @@ In another terminal, run frontend:
    npm start
 
 The app will be accessible at:
-🌐 Frontend: http://localhost:3000
+🌐 Frontend - React App: http://localhost:3000
 🔗 Backend API: http://localhost:3001
 
-🧪 Running the Tests
-UI Tests (Playwright)
-Inside client/:
+🧪 UI Tests – Playwright
+✅ Scenarios Automated
+Login (valid & invalid credentials)
+
+Create a todo
+
+Edit a todo
+
+Delete a todo
+
+UI validation for state changes and error handling
+
+Assertion for the element
+
+📦 Setup & Run
+1. Navigate to client folder:
+
+```bash
+cd client
+
+2. Install Playwright:
+
+```bash
+npm init playwright@latest
+
+
+3. Run all tests:
 
 ```bash
 npx playwright test
+
+4. Open Playwright Test UI:
+
+```bash
+npx playwright test --ui
+
+5.View HTML test report:
+
+```bash
+npx playwright show-report
+✅ Ensure both frontend (localhost:3000) and backend (localhost:3001) servers are running before executing UI tests.
 
 API Tests (Postman or Newman)
 Run collection from Postman or CLI:
