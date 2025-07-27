@@ -29,13 +29,13 @@ Before running the application, make sure you have the following software instal
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/mern-todo-app.git
+   git clone https://github.com/promise-dash/MERN_Todo_App.git 
    
 2. Install dependencies:
 
    ```bash
    cd mern-todo-app
-   npm install
+   npm install 
 
 3. Set up environment variables:
 
@@ -44,18 +44,23 @@ Before running the application, make sure you have the following software instal
 
    ```bash
    MONGODB_URI=<your-mongodb-uri>
-   JWT_SECRET=<your-jwt-secret>
+   JWT_SECRET_KEY=<your-jwt-secret>
  
 4. Start the development server:
 
    ```bash
+   connect mongoDB 
    npm run dev
+   npm start
    
 5. Open your web browser and access the application at http://localhost:3000.
 
 
-## Contributing
-
-Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
+## Help and Support
+If you need any help about setup please feel free to contact!
+Nimmy Abraham Chandredath
+QA Automation Engineer
+nimmysmail@gmail.com
+0037123206334
 
     

@@ -13,24 +13,31 @@ const Login = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
+  e.preventDefault();
+
+  try {
     const response = await fetch("http://localhost:3001/api/auth/login", {
       method: 'POST',
       headers: {
-				'Content-Type': 'application/json',
-			},
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(userData),
     });
 
     const data = await response.json();
 
-    if(data.token){
+    if (!response.ok) {
+      alert(data.message || "Login failed");
+    } else if (data.token) {
       alert('User Logged In');
       window.localStorage.setItem('token', data.token);
       window.location.href = "/";
     }
+  } catch (err) {
+    alert("Network error: " + err.message);
   }
+}
+
 
   return (
     <section>

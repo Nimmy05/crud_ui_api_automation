@@ -29,25 +29,30 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    try {
-        const user = await UserModel.findOne({email});
-        if(!user){
-            return res.status(400).json("No user exist with this email");
-        }
-        const isValidPassword = await bcrypt.compare(password, user.password);
+  try {
+    const user = await UserModel.findOne({ email });
 
-        if(!isValidPassword){
-            return res.status(400).json("Incorrect password");
-        }
-        const token =  jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
-
-        res.status(201).json({ token: token });
-    } catch (error) {
-         res.status(500).json({ message: 'Login Error', error });
+    if (!user) {
+      return res.status(400).json({ message: "No user exist with this email" });
     }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if (!isValidPassword) {
+      return res.status(400).json({ message: "Incorrect password" });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: '1h',
+    });
+
+    return res.status(200).json({ token });
+  } catch (error) {
+    console.error('Login Error:', error); // This helps
+    return res.status(500).json({ message: 'Login Error', error: error.message });
+  }
 });
 
-
-export { router as authRouter };
+export default router;
