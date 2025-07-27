@@ -1,66 +1,142 @@
-# MERN Todo App
+# ✅ MERN Todo App with Automated UI & API Testing
 
-A simple Todo App built with the MERN (MongoDB, Express.js, React.js, Node.js) stack.
+This project is a full-stack Todo application built with the **MERN** stack: MongoDB, Express.js, React.js, and Node.js. It features robust authentication and allows users to create, read, update, and delete (CRUD) todo items.
 
-## Features
+To showcase real-world quality assurance skills, this app includes **automated tests** for both the frontend and backend, covering UI interactions and API endpoints.
 
-- User registration and login functionality with JWT authentication.
-- Create, read, update, and delete (CRUD) operations for managing todos.
-- Protected routes that require authentication.
+---
 
-## Technologies Used
+## 🚀 Features
 
-- **MongoDB**: A NoSQL database for storing user information and todos.
-- **Express.js**: A web application framework for building the server-side API.
-- **React.js**: A JavaScript library for building the user interface.
-- **Node.js**: A JavaScript runtime for executing server-side code.
-- **JWT (JSON Web Tokens)**: Used for user authentication and authorization.
-- **WebSocket** (optional): Enables real-time updates without page refresh.
+- 🔐 User registration and login with JWT-based authentication.
+- ✅ Full CRUD functionality for managing todos.
+- 🔒 Protected routes for authenticated users only.
+- 🔁 Optional WebSocket integration for real-time updates.
+- 🧪 Automated UI tests (Playwright).
+- 🧪 Automated API tests (Postman/RESR API).
 
-## Prerequisites
+---
 
-Before running the application, make sure you have the following software installed:
+## 🛠️ Tech Stack
 
-- [Node.js](https://nodejs.org)
-- [MongoDB](https://www.mongodb.com)
+| Layer         | Technology         |
+|---------------|--------------------|
+| Frontend      | React.js           |
+| Backend       | Node.js + Express  |
+| Database      | MongoDB (Mongoose) |
+| Auth          | JWT                |
+| UI Testing    | Playwright or Cypress |
+| API Testing   | Postman / Newman or Supertest |
+| Dev Tools     | VS Code, Git, GitHub |
 
-## Getting Started
+---
 
-1. Clone the repository:
+## 🧪 Automated Testing
 
-   ```bash
-   git clone https://github.com/promise-dash/MERN_Todo_App.git 
+### ✅ UI Automation
+- Login (valid and invalid)
+- Create a todo
+- Edit a todo
+- Delete a todo
+- UI validation for data updates
+
+### ✅ API Testing
+| Endpoint       | Description                |
+|----------------|----------------------------|
+| `POST /login`  | Login with user credentials |
+| `GET /todos`   | Fetch list of todos         |
+| `POST /todos`  | Create a new todo           |
+| `PUT /todos/:id` | Update existing todo      |
+| `DELETE /todos/:id` | Delete a todo          |
+
+Includes both **positive and negative** test cases.
+
+---
+
+## ⚙️ Prerequisites
+
+- [Node.js](https://nodejs.org/)
+- [MongoDB](https://www.mongodb.com/)
+- Git
+
+---
+
+## 🧭 Getting Started
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/promise-dash/MERN_Todo_App.git
+cd MERN_Todo_App
+
    
 2. Install dependencies:
+For the client (React app):
 
-   ```bash
-   cd mern-todo-app
-   npm install 
+ ```bash
+   cd client
+   npm install
+
+For the server (Node + Express API):
+
+ ```bash
+   cd ../server
+   npm install
 
 3. Set up environment variables:
 
- - Create a .env file in the project root directory.
+ - Create a .env file inside the server/ directory:
  - Add the following variables to the .env file:
 
    ```bash
    MONGODB_URI=<your-mongodb-uri>
    JWT_SECRET_KEY=<your-jwt-secret>
  
-4. Start the development server:
+4. Start MongoDB locally or connect to MongoDB 
+Then run backend:
 
    ```bash
-   connect mongoDB 
+   cd server
    npm run dev
+
+In another terminal, run frontend:
+
+ ```bash
+   cd client
    npm start
-   
-5. Open your web browser and access the application at http://localhost:3000.
 
+The app will be accessible at:
+🌐 Frontend: http://localhost:3000
+🔗 Backend API: http://localhost:3001
 
-## Help and Support
-If you need any help about setup please feel free to contact!
+🧪 Running the Tests
+UI Tests (Playwright)
+Inside client/:
+
+```bash
+npx playwright test
+
+API Tests (Postman or Newman)
+Run collection from Postman or CLI:
+
+```bash
+newman run postman_collection.json
+
+📄 Test Strategy
+A brief test plan is included under /tests or /docs:
+
+Coverage areas
+
+Tools used
+
+How to run
+
+Assumptions and limitations
+
+🙋 Help & Support
+If you have questions or need setup assistance:
+
 Nimmy Abraham Chandredath
 QA Automation Engineer
-nimmysmail@gmail.com
-0037123206334
-
-    
+📧 nimmysmail@gmail.com
+📞 +371 23206334
