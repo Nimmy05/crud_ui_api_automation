@@ -16,10 +16,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation check
+    // Validation check - throw error if empty fields
     if (!userData.email || !userData.password) {
-      toast.error("Both email and password are required");
-      return;
+      // Throwing an error which you can catch and toast or directly toast here
+      try {
+        throw new Error("Both email and password are required");
+      } catch (validationError) {
+        toast.error(validationError.message);
+        return;
+      }
     }
 
     try {
