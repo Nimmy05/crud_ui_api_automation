@@ -1,0 +1,8 @@
+{
+  "login_test_users": {
+    "login_test_user_one": {
+      "email": "test67@gmail.com",
+      "password": "abc123"
+    }
+  }
+}
