@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-  const [userData, setUserData] = useState({
-    email: '',
-    password: '',
-  });
+  const [userData, setUserData] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -16,23 +12,31 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation check - throw error if empty fields
-    if (!userData.email || !userData.password) {
-      // Throwing an error which you can catch and toast or directly toast here
-      try {
-        throw new Error("Both email and password are required");
-      } catch (validationError) {
-        toast.error(validationError.message);
-        return;
-      }
+    const { email, password } = userData;
+    const errors = [];
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email.trim()) {
+      errors.push("Email");
+    } else if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    if (!password.trim()) {
+      errors.push("Password");
+    }
+
+    if (errors.length > 0) {
+      toast.error(`${errors.join(" and ")} ${errors.length > 1 ? "are" : "is"} required`);
+      return;
     }
 
     try {
       const response = await fetch("http://localhost:3001/api/auth/login", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
 
@@ -42,110 +46,99 @@ const Login = () => {
         toast.error(data.message || "Login failed");
       } else if (data.token) {
         toast.success(`${userData.email} is Logged In`);
-        window.localStorage.setItem('token', data.token);
+        window.localStorage.setItem("token", data.token);
         setTimeout(() => {
           window.location.href = "/";
         }, 1500);
       }
-    } catch (err) {
-      toast.error("Network error: " + err.message);
+    } catch (error) {
+      toast.error("Network error: " + error.message);
     }
   };
 
   return (
-    <section style={{
-      minHeight: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      background: '#f3f4f6',
-    }}>
-      <div style={{
-        background: 'white',
-        padding: '2rem',
-        borderRadius: '10px',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        width: '100%',
-        maxWidth: '400px',
-      }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Login</h2>
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#f5f6fa",
+        }}
+      >
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          style={{
+            background: "#fff",
+            padding: "40px",
+            borderRadius: "10px",
+            boxShadow: "0 0 15px rgba(0,0,0,0.1)",
+            width: "100%",
+            maxWidth: "400px",
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ marginBottom: "30px", color: "#333" }}>Login</h2>
 
-        {/* Fake inputs to prevent browser autofill */}
-        <form onSubmit={handleSubmit} autoComplete="off">
           <input
-            type="text"
-            name="fakeUsername"
-            autoComplete="username"
-            style={{ display: 'none' }}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={userData.email}
+            onChange={handleChange}
+            autoComplete="off"
+            style={{
+              width: "100%",
+              padding: "12px 15px",
+              marginBottom: "20px",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              fontSize: "16px",
+            }}
           />
+
           <input
             type="password"
-            name="fakePassword"
+            name="password"
+            placeholder="Password"
+            value={userData.password}
+            onChange={handleChange}
             autoComplete="new-password"
-            style={{ display: 'none' }}
+            style={{
+              width: "100%",
+              padding: "12px 15px",
+              marginBottom: "30px",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              fontSize: "16px",
+            }}
           />
 
-          <div style={{ marginBottom: '1rem' }}>
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={userData.email}
-              onChange={handleChange}
-              autoComplete="off"
-              required
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                marginTop: '0.25rem',
-                border: '1px solid #ccc',
-                borderRadius: '5px',
-              }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={userData.password}
-              onChange={handleChange}
-              autoComplete="new-password"
-              required
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                marginTop: '0.25rem',
-                border: '1px solid #ccc',
-                borderRadius: '5px',
-              }}
-            />
-          </div>
-
-          <button type="submit" style={{
-            width: '100%',
-            padding: '0.75rem',
-            backgroundColor: '#2563eb',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-          }}>
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              padding: "12px",
+              backgroundColor: "#007BFF",
+              color: "#fff",
+              border: "none",
+              borderRadius: "8px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              transition: "background-color 0.3s ease",
+            }}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#007BFF")}
+          >
             Login
           </button>
         </form>
-
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-          Don’t have an account? <Link to="/register" style={{ color: '#2563eb' }}>Register</Link>
-        </p>
       </div>
-
-      <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
-    </section>
+      <ToastContainer position="top-right" autoClose={3000} />
+    </>
   );
 };
 
