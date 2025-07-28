@@ -1,4 +1,4 @@
-import testData from '../src/data/testData.json'; 
+import testData from 'src/data/testData.json'; 
 
 const thisTestConfig = {
   "login_user": testData.login_test_users.login_test_user_one,

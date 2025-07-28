@@ -2,11 +2,21 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "paths": {
-      "@utils/*": ["utils/*"],
-      "@configs/*": ["configs/*"],
-      "@data/*": ["src/data/*"],
-      "@constants": ["globalConfig/constants.ts"]
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@configs/*": [
+        "configs/*"
+      ],
+      "@data/*": [
+        "src/data/*"
+      ],
+      "@constants": [
+        "globalConfig/constants.ts"
+      ]
     }
   }
 }
