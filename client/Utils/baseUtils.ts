@@ -1,4 +1,5 @@
-import { Locator } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
+import { byAriaLabel} from 'utils/locatorUtils';
 
 
 export const button = {
@@ -31,6 +32,11 @@ export const resetFormFields = async (
   if (password) {
     await password.fill('');
   }
+};
+
+export const closeAlert = async (page: Page) => {
+  const closeButton = byAriaLabel(page, 'button', 'close').first();
+  await button.clickOnButton(closeButton);
 };
 
 

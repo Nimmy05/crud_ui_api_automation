@@ -5,6 +5,7 @@ export const constants: any = {
   },
   button_texts: {
     "login": "Login",
+    "add": "Add"
   },
   alert_texts: {
     "email_required": "Email is required",
@@ -15,6 +16,9 @@ export const constants: any = {
     "not_exist": "No user exist with this email",
     "incorrect_password": "Incorrect password"
   },
+  place_holder_texts: {
+    "new_to_do": "Enter new todo"
+  }
 }
 
 export const timeout: number = 5000;

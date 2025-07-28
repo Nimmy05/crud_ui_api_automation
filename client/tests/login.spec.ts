@@ -1,10 +1,10 @@
 import { test, expect, Locator } from '@playwright/test';
-import { byAriaLabel, byButtonTextIs, byInputName } from 'utils/locatorUtils';
+import { byButtonTextIs, byInputName } from 'utils/locatorUtils';
 import { constants } from 'globalConfig/constants';
-import { inputField, button, resetFormFields } from 'utils/baseUtils';
+import { inputField, resetFormFields, closeAlert } from 'utils/baseUtils';
 import thisTestConfig from 'configs/login.config';
 import { LoginUser } from 'src/data/interfaces';
-import { timeout, baseURL } from 'globalConfig/constants';
+import { baseURL } from 'globalConfig/constants';
 
 test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
   test('@noLogin Verify login with various credential combinations', async ({ page }) => {
@@ -12,7 +12,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
     const passwordField: Locator = byInputName(page, 'password');
     const loginButton: Locator = byButtonTextIs(page, constants.button_texts.login);
     const user: LoginUser = thisTestConfig.login_user;
-    const closeAlert = () => button.clickOnButton(byAriaLabel(page, 'button', 'close').first());
+
 
     await test.step('Navigate to login page', async () => {
       await page.goto(`${baseURL}/login`);
@@ -23,7 +23,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
       await inputField.fill(emailField, user.email);
       await loginButton.click();
       await expect(page.getByText(constants.alert_texts.password_required)).toBeVisible();
-      await closeAlert();
+      await closeAlert(page);
       await resetFormFields({ email: emailField });
     });
 
@@ -32,7 +32,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
       await inputField.fill(passwordField, user.password);
       await loginButton.click();
       await expect(page.getByText(constants.alert_texts.email_required)).toBeVisible();
-      await closeAlert();
+      await closeAlert(page);
       await resetFormFields({ password: passwordField });
     });
 
@@ -42,7 +42,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
       await inputField.fill(passwordField, user.password);
       await loginButton.click();
       await expect(page.getByText(constants.alert_texts.require_valid_email)).toBeVisible();
-      await closeAlert();
+      await closeAlert(page);
       await resetFormFields({ email: emailField, password: passwordField });
     });
 
@@ -50,7 +50,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
     await test.step('Attempt login with empty credentials', async () => {
       await loginButton.click();
       await expect(page.getByText(constants.alert_texts.required_both)).toBeVisible();
-      await closeAlert();
+      await closeAlert(page);
     });
 
     // Case 5: Wrong credentials
@@ -59,7 +59,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
       await inputField.fill(passwordField, thisTestConfig.wrong_password);
       await loginButton.click();
       await expect(page.getByText(constants.alert_texts.not_exist)).toBeVisible();
-      await closeAlert();
+      await closeAlert(page);
     });
 
     // Case 6: Valid email with wrong password
@@ -69,7 +69,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
       await inputField.fill(passwordField, thisTestConfig.wrong_password);
       await loginButton.click();
       await expect(page.getByText(constants.alert_texts.incorrect_password)).toBeVisible();
-      await closeAlert();
+      await closeAlert(page);
     });
 
     // Case 7: Valid login
