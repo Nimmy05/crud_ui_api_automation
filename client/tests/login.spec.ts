@@ -1,9 +1,9 @@
 import { test, expect, Locator } from '@playwright/test';
-import { byAriaLabel, byButtonTextIs, byInputName } from '../Utils/locatorUtils';
-import { constants } from '../globalConfig/constants.ts';
-import { inputField, button, resetFormFields } from '../Utils/baseUtils';
-import thisTestConfig from '../configs/login.config.ts';
-import { LoginUser } from '../src/data/interfaces.ts';
+import { byAriaLabel, byButtonTextIs, byInputName } from 'utils/locatorUtils';
+import { constants } from 'globalConfig/constants';
+import { inputField, button, resetFormFields } from 'utils/baseUtils';
+import thisTestConfig from 'configs/login.config';
+import { LoginUser } from 'src/data/interfaces';
 
 test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
   test('Verify login with various credential combinations', async ({ page }) => {

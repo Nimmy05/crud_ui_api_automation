@@ -1,0 +1,12 @@
+// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["utils/*"],
+      "@configs/*": ["configs/*"],
+      "@data/*": ["src/data/*"],
+      "@constants": ["globalConfig/constants.ts"]
+    }
+  }
+}
