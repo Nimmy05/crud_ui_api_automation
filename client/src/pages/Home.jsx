@@ -30,32 +30,38 @@ const Home = () => {
   }, [fetchTodos]);
 
   // Create new todo
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Create new todo
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await fetch("http://localhost:3001/api/create-todo", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ todo }),
-      });
+  if (!todo || todo.trim() === "") {
+    toast.warn("Please enter a todo item before submitting.");
+    return;
+  }
 
-      const data = await response.json();
+  try {
+    const response = await fetch("http://localhost:3001/api/create-todo", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ todo }),
+    });
 
-      if (response.ok) {
-        toast.success(`Todo for "${todo}" created successfully`);
-        setTodo("");
-        fetchTodos();
-      } else {
-        toast.error(data.message || "Failed to create todo");
-      }
-    } catch (error) {
-      toast.error("Create error: " + error.message);
+    const data = await response.json();
+
+    if (response.ok) {
+      toast.success(`Todo for "${todo}" created successfully`);
+      setTodo("");
+      fetchTodos();
+    } else {
+      toast.error(data.message || "Failed to create todo");
     }
-  };
+  } catch (error) {
+    toast.error("Create error: " + error.message);
+  }
+};
 
   // Edit a todo
   const handleEdit = async (todoId) => {

@@ -5,7 +5,9 @@ export const constants: any = {
   },
   button_texts: {
     "login": "Login",
-    "add": "Add"
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   alert_texts: {
     "email_required": "Email is required",
@@ -14,7 +16,10 @@ export const constants: any = {
     "required_both": "Email and Password are required",
     "wrong_credentials": "Please enter a valid email address",
     "not_exist": "No user exist with this email",
-    "incorrect_password": "Incorrect password"
+    "incorrect_password": "Incorrect password",
+    "duplicate_to_do": "Error creating todo",
+    "blank_todo": "Please enter a todo item before submitting.",
+    "no_todos": "No todos found."
   },
   place_holder_texts: {
     "new_to_do": "Enter new todo"

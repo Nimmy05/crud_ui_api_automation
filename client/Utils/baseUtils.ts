@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 import { byAriaLabel} from 'utils/locatorUtils';
 
 
@@ -39,6 +39,10 @@ export const closeAlert = async (page: Page) => {
   await button.clickOnButton(closeButton);
 };
 
+export const verifyAndCloseAlert = async (page: Page, alertText: string) => {
+  await expect(page.getByText(alertText)).toBeVisible();
+  await closeAlert(page);
+};
 
 
 

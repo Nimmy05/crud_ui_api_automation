@@ -1,42 +1,54 @@
-import { test, Locator, expect } from '@playwright/test';
-import {  baseURL, constants } from 'globalConfig/constants';
-import { inputField, button, closeAlert } from 'utils/baseUtils';
-import { byButtonTextIs } from 'utils/locatorUtils'
+import { test, expect } from '@playwright/test';
+import { baseURL, constants } from 'globalConfig/constants';
+import { createTodo, deleteAllTodos } from 'utils/todoActions';
+import { button, verifyAndCloseAlert } from 'utils/baseUtils';
 import thisTestConfig from '@configs/create.config.spec';
+import { byButtonTextIs } from 'utils/locatorUtils';
 
 
 test.describe(`Automate the 'Create ToDo' of 'MERN Todo App'`, () => {
     test(`Should create ToDo Item`, async ({ page }) => {
-        const newToDoInputFieldLocator: Locator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
-        const newToDo: string = thisTestConfig.new_todo;
+        const newToDoItem: string = thisTestConfig.new_todo;
+        const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
+
 
         await test.step(`Navigate to the '${constants.headings.todo_list}'`, async () => {
             await page.goto(`${baseURL}/`);
         });
-        
-         await test.step(`Verify the heading '${constants.headings.todo_list}' is visible`, async () => {
+
+        await test.step(`Verify the heading '${constants.headings.todo_list}' is visible`, async () => {
             await expect(page.getByRole('heading', { level: 2 })).toHaveText(constants.headings.todo_list);
         });
-    
-        await test.step(`Verify the '${constants.place_holder_texts.new_to_do}' input field is visible`, async () => {
-            await expect(newToDoInputFieldLocator).toBeVisible();
+
+        await test.step(`Create a new todo item '${newToDoItem}' and verify it is added to the list`, async () => {
+            await createTodo(page, newToDoItem);
         });
 
-        await test.step(`Fill value in the '${constants.place_holder_texts.new_to_do}' input field`, async () => {
-            await inputField.fill(newToDoInputFieldLocator, newToDo);
-        });
-
-        await test.step(`Click on the '${constants.button_texts.add}' button`, async () => {
+        await test.step(`Create duplicate todo item`, async () => {
+            await inputFieldLocator.fill(newToDoItem);
             await button.clickOnButton(byButtonTextIs(page, constants.button_texts.add));
         });
 
-        await test.step(`Verify the alert 'Todo for "${newToDo}" created successfully' is visible`, async () => {
-            await expect(page.getByText(`Todo for "${newToDo}" created successfully`)).toBeVisible();
-            await closeAlert(page);
+        await test.step(`Verify the '${constants.alert_texts.duplicate_to_do}' alert is visible`, async () => {
+            await verifyAndCloseAlert(page, constants.alert_texts.duplicate_to_do);
         });
 
-        await test.step(`Verify the todo item '${newToDo}' is created`, async () => {
-            await expect(page.locator(`div span:text-is('${newToDo}')`)).toBeVisible();
+        await test.step(`Create blank todo item`, async () => {
+            await inputFieldLocator.fill('');
+            await button.clickOnButton(byButtonTextIs(page, constants.button_texts.add));
+        });
+
+        await test.step(`Verify the '${constants.alert_texts.blank_todo}' alert is visible`, async () => {
+            await verifyAndCloseAlert(page, constants.alert_texts.blank_todo);
+        });
+
+        await test.step(`Verify creating more than one todo items`, async () => {
+            await createTodo(page, thisTestConfig.second_todo);
+        });
+
+        // perform clean up
+        await test.step(`Delete the todo item '${newToDoItem}' from the list`, async () => {
+            await deleteAllTodos(page);
         });
 
     });

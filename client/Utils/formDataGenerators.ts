@@ -9,3 +9,8 @@ export function generateToDo(): string {
   const timestamp = generateTimestamp();
   return `todo_${timestamp}`;
 };
+
+export function generateSecondToDo(): string {
+  const timestamp = generateTimestamp();
+  return `second_todo_${timestamp}`;
+};
