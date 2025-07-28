@@ -4,9 +4,10 @@ import { constants } from 'globalConfig/constants';
 import { inputField, button, resetFormFields } from 'utils/baseUtils';
 import thisTestConfig from 'configs/login.config';
 import { LoginUser } from 'src/data/interfaces';
+import { timeout, baseURL } from 'globalConfig/constants';
 
 test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
-  test('Verify login with various credential combinations', async ({ page }) => {
+  test('@noLogin Verify login with various credential combinations', async ({ page }) => {
     const emailField: Locator = byInputName(page, 'email');
     const passwordField: Locator = byInputName(page, 'password');
     const loginButton: Locator = byButtonTextIs(page, constants.button_texts.login);
@@ -14,7 +15,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
     const closeAlert = () => button.clickOnButton(byAriaLabel(page, 'button', 'close').first());
 
     await test.step('Navigate to login page', async () => {
-      await page.goto('http://localhost:3000/login');
+      await page.goto(`${baseURL}/login`);
     });
 
     // Case 1: Missing Password

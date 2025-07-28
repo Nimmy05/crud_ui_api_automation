@@ -1,21 +1,25 @@
+// global-teardown.ts
 import { chromium } from '@playwright/test';
-import * as dotenv from 'dotenv';
-import { logout } from './utils/auth'; // ✅ Import logout
-dotenv.config();
+import dotenv from 'dotenv';
+
+dotenv.config(); // Load .env variables
 
 async function globalTeardown() {
   const browser = await chromium.launch();
-  const context = await browser.newContext({
-    storageState: './storage/storageState.json',
-  });
+  const context = await browser.newContext({ storageState: './storage/storageState.json' });
   const page = await context.newPage();
 
-  try {
-    await page.goto(`${process.env.BASE_URL}/`); // ✅ Ensure navigation before logout
-    await logout(page);
-  } catch (error) {
-    console.error('Logout failed during globalTeardown:', error);
-  }
+  const baseUrl = process.env.BASE_URL!;
+
+  await page.goto(`${baseUrl}/`);
+
+  // Click the logout button
+  await page.click('text=Logout');
+
+  // Optionally verify you're back at the login page
+  await page.waitForURL(`${baseUrl}/login`, { timeout: 5000 });
+
+  console.log('(logout) completed.');
 
   await browser.close();
 }

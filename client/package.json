@@ -19,7 +19,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test:e2e": "playwright test",
+    "test:setup": "ts-node global-setup.ts",
+    "test:teardown": "ts-node global-teardown.ts",
+    "test:ci": "npm run test:setup && npm run test:e2e && npm run test:teardown"
   },
   "eslintConfig": {
     "extends": [
@@ -42,6 +46,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@playwright/test": "^1.54.1",
-    "@types/node": "^24.1.0"
+    "@types/node": "^24.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
