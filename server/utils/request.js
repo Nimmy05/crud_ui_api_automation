@@ -6,7 +6,7 @@ import { baseUrl } from '../config/env.config.js';
 const request = supertest(baseUrl);
 
 export function post(path) {
-  return request.post(path);
+  return request(app).post(path);
 }
 
 export function get(path) {

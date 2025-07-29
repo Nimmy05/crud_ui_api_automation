@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-// env.config.js
 export const baseUrl = 'http://localhost:3001';
 
 export const credentials = {

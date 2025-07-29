@@ -27,39 +27,40 @@ const handleValidationErrors = (req, res, next) => {
   next();
 };
 
-// Create Todo (POST)
-// Create Todo (POST)
 router.post(
-  '/todos',
+  '/',
   verifyToken,
-  body('title').trim().notEmpty().withMessage('Title is required'),
-  handleValidationErrors, // ✅ add this instead of ...
+  body('todo').trim().notEmpty().withMessage('Todo is required'),
   async (req, res) => {
-    try {
-      const userId = req.userId;
-      const { title, completed = false } = req.body;
+    const errors = validationResult(req);
 
-      const newTodo = new TodoModel({ title, completed, userId });
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: 'Validation error', errors: errors.array() });
+    }
+
+    try {
+      const userId = req.userId; // Set in verifyToken middleware
+      const { todo } = req.body;
+
+      const newTodo = new TodoModel({
+        title: todo,
+        completed: false,
+        userId,
+      });
+
       await newTodo.save();
 
-      res.status(201).json({ message: 'Todo created successfully', todo: newTodo });
-    } catch (err) {
-      console.error('Create Todo error:', err);
-      res.status(500).json({ message: 'Internal server error' });
+      return res.status(201).json({
+        message: 'Todo created successfully',
+        todo: newTodo,
+      });
+    } catch (error) {
+      console.error('Create Todo Error:', error);
+      return res.status(500).json({ message: 'Internal server error', error: error.message });
     }
   }
 );
 
-// Read Todos (GET)
-router.get('/todos', verifyToken, async (req, res) => {
-  try {
-    const todos = await TodoModel.find({ userId: req.userId });
-    res.status(200).json({ todos });
-  } catch (error) {
-    console.error('Read Todos error:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
 
 // Full Update Todo (PUT)
 router.put(

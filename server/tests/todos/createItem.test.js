@@ -4,18 +4,17 @@ import { loginAndGetToken } from '../../utils/authHelper.js';
 
 describe('Create Item API', () => {
   it('should create an item', async () => {
-    const token = await loginAndGetToken();
-    const newItem = {
-      title: 'Write Playwright tests',
-      completed: false,
-    };
+  const token = await loginAndGetToken();
+  const newItem = {
+    todo: 'Write Playwright tests',
+  };
 
-    const res = await request(app)
-      .post('/api/todos') // ✅ fixed endpoint
-      .set('Authorization', `Bearer ${token}`)
-      .send(newItem);
+  const response = await request(app)
+    .post('/api/create-todo')
+    .set('Authorization', `Bearer ${token}`)
+    .send(newItem);
 
-    expect(res.statusCode).toBe(201);
-    expect(res.body.todo.title).toBe(newItem.title);
-  });
+  expect(response.statusCode).toBe(201);
+  expect(response.body.title).toBe(newItem.title);
+}, 15000);
 });

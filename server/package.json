@@ -26,5 +26,9 @@
     "jest": "^30.0.5",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.4"
+  },
+  "jest": {
+  "setupFilesAfterEnv": ["./testSetup.js"]
   }
 }
+

@@ -1,15 +1,17 @@
-// testSetup.js
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGODB_URI;
+beforeAll(async () => {
+  if (mongoose.connection.readyState === 0) {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  }
+});
 
-export default async function globalSetup() {
-  console.log('Connecting to MongoDB before running tests...');
-  await mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-}
+afterAll(async () => {
+  await mongoose.connection.close();
+});
