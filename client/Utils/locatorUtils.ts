@@ -9,6 +9,10 @@ export const byButtonTextIs = (page: Page, buttonText: string): Locator =>
 export const byInputName = (page: Page, inputName: string): Locator =>
   page.locator(`input[name="${inputName}"]`);
 
+
+export const byInputValue = (page: Page, inputValue: string): Locator =>
+  page.locator(`input[value="${inputValue}"]`);
+
 export const byAriaLabel = (page: Page, tag: string, text: string): Locator => 
 page.locator(`${tag}[aria-label='${text}']`);
 

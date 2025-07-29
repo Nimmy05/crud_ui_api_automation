@@ -7,7 +7,8 @@ export const constants: any = {
     "login": "Login",
     "add": "Add",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "save": "Save"
   },
   alert_texts: {
     "email_required": "Email is required",

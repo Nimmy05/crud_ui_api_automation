@@ -2,9 +2,8 @@ import { test, expect } from '@playwright/test';
 import { baseURL, constants } from 'globalConfig/constants';
 import { createTodo, deleteAllTodos } from 'utils/todoActions';
 import { button, verifyAndCloseAlert } from 'utils/baseUtils';
-import thisTestConfig from '@configs/create.config.spec';
+import thisTestConfig from '@configs/create.config';
 import { byButtonTextIs } from 'utils/locatorUtils';
-
 
 test.describe(`Automate the 'Create ToDo' of 'MERN Todo App'`, () => {
     test(`Should create ToDo Item`, async ({ page }) => {
@@ -47,7 +46,7 @@ test.describe(`Automate the 'Create ToDo' of 'MERN Todo App'`, () => {
         });
 
         // perform clean up
-        await test.step(`Delete the todo item '${newToDoItem}' from the list`, async () => {
+        await test.step(`Delete the todo items from the list`, async () => {
             await deleteAllTodos(page);
         });
 

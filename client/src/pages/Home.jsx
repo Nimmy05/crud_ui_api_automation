@@ -5,9 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 const Home = () => {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [editText, setEditText] = useState("");
   const token = localStorage.getItem("token");
 
-  // Fetch all todos - memoized with useCallback
   const fetchTodos = useCallback(async () => {
     try {
       const response = await fetch("http://localhost:3001/api/read-todos", {
@@ -17,7 +18,6 @@ const Home = () => {
           "Content-Type": "application/json",
         },
       });
-
       const data = await response.json();
       setTodos(data.todos || []);
     } catch (error) {
@@ -29,65 +29,61 @@ const Home = () => {
     fetchTodos();
   }, [fetchTodos]);
 
-  // Create new todo
-  // Create new todo
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!todo || todo.trim() === "") {
-    toast.warn("Please enter a todo item before submitting.");
-    return;
-  }
-
-  try {
-    const response = await fetch("http://localhost:3001/api/create-todo", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ todo }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      toast.success(`Todo for "${todo}" created successfully`);
-      setTodo("");
-      fetchTodos();
-    } else {
-      toast.error(data.message || "Failed to create todo");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!todo || todo.trim() === "") {
+      toast.warn("Please enter a todo item before submitting.");
+      return;
     }
-  } catch (error) {
-    toast.error("Create error: " + error.message);
-  }
-};
-
-  // Edit a todo
-  const handleEdit = async (todoId) => {
-    const oldTodo = todos.find((t) => t._id === todoId)?.todo || "Unknown";
-
-    const updatedTodo = window.prompt("Update your todo", oldTodo);
-
-    if (!updatedTodo || updatedTodo.trim() === "") return;
-
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/update-todo/${todoId}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ updatedTodo }),
-        }
-      );
+      const response = await fetch("http://localhost:3001/api/create-todo", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ todo }),
+      });
 
       const data = await response.json();
-
       if (response.ok) {
-        toast.success(`"${oldTodo}" updated to "${updatedTodo}"`);
+        toast.success(`Todo for "${todo}" created successfully`);
+        setTodo("");
+        fetchTodos();
+      } else {
+        toast.error(data.message || "Failed to create todo");
+      }
+    } catch (error) {
+      toast.error("Create error: " + error.message);
+    }
+  };
+
+  const handleEditClick = (todoId, currentText) => {
+    setEditId(todoId);
+    setEditText(currentText);
+  };
+
+  const handleEditSave = async () => {
+    if (!editText || editText.trim() === "") {
+      toast.warn("Todo text cannot be empty.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3001/api/update-todo/${editId}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ updatedTodo: editText }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success(`Todo updated to "${editText}"`);
+        setEditId(null);
+        setEditText("");
         fetchTodos();
       } else {
         toast.error(data.message || "Failed to update todo");
@@ -97,21 +93,17 @@ const handleSubmit = async (e) => {
     }
   };
 
-  // Delete a todo
   const handleDelete = async (todoId) => {
     const deletedTodo = todos.find((t) => t._id === todoId)?.todo || "Unknown";
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/delete-todo/${todoId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:3001/api/delete-todo/${todoId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       const data = await response.json();
 
@@ -152,15 +144,43 @@ const handleSubmit = async (e) => {
       {todos.length === 0 ? (
         <p>No todos found.</p>
       ) : (
-        todos.map((todo) => (
-          <div key={todo._id} style={{ marginBottom: "1rem" }}>
-            <span>{todo.todo}</span>
-            <button onClick={() => handleEdit(todo._id)} style={{ marginLeft: "1rem" }}>
-              Edit
-            </button>
-            <button onClick={() => handleDelete(todo._id)} style={{ marginLeft: "0.5rem" }}>
-              Delete
-            </button>
+        todos.map((todoItem) => (
+          <div key={todoItem._id} style={{ marginBottom: "1rem" }}>
+            {editId === todoItem._id ? (
+              <>
+                <input
+                  type="text"
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  style={{ padding: "0.5rem", width: "60%" }}
+                />
+                <button onClick={handleEditSave} style={{ marginLeft: "0.5rem" }}>
+                  Save
+                </button>
+                <button
+                  onClick={() => {
+                    setEditId(null);
+                    setEditText("");
+                  }}
+                  style={{ marginLeft: "0.5rem" }}
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <span>{todoItem.todo}</span>
+                <button
+                  onClick={() => handleEditClick(todoItem._id, todoItem.todo)}
+                  style={{ marginLeft: "1rem" }}
+                >
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(todoItem._id)} style={{ marginLeft: "0.5rem" }}>
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         ))
       )}

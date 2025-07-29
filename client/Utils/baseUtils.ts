@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from '@playwright/test';
-import { byAriaLabel} from 'utils/locatorUtils';
+import { byAriaLabel } from 'utils/locatorUtils';
 
 
 export const button = {
