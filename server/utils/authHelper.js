@@ -1,14 +1,24 @@
-const { post } = require('./request'); // adjust relative path as needed
-const { credentials, baseUrl } = require('../config/env.config');
+import request from 'supertest';
+import app from '../app.js'; // or the correct path to your app
 
-let token;
+export async function loginAndGetToken() {
+  const credentials = {
+    email: 'test67@gmail.com',
+    password: 'abc123',
+  };
 
-const loginAndGetToken = async () => {
-  if (!token) {
-    const res = await post(`http://localhost:3001/api/auth/login`).send(credentials);
-    token = res.body.token;
+  console.log('BASE_URL in login helper:', process.env.BASE_URL || 'http://localhost:3001');
+  console.log('Credentials:', credentials);
+
+  const res = await request(app)
+    .post('/api/auth/login') // ✅ ensure this matches your backend login route
+    .send(credentials);
+
+  console.log('Login response:', res.body); // ❗ Check what comes back
+
+  if (!res.body || !res.body.token) {
+    throw new Error('Token not received in login response');
   }
-  return token;
-};
 
-module.exports = { loginAndGetToken };
+  return res.body.token;
+}

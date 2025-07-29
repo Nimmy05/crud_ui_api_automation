@@ -1,5 +1,8 @@
-// jest.config.js
+// jest.config.mjs
 export default {
-  transform: {},
   testEnvironment: 'node',
+  transform: {},
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1', // Optional: handles import paths with `.js`
+  },
 };

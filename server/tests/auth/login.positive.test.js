@@ -1,5 +1,5 @@
-const { post } = require('../../utils/request');
-const { credentials, baseUrl } = require('../../config/env.config');
+import post from '../../utils/request';
+import { baseUrl, credentials } from '../../config/env.config';
 
 describe('Login - Positive', () => {
   it('should login with valid credentials', async () => {

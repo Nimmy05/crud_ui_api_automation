@@ -1,9 +1,10 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-module.exports = {
-  baseUrl: process.env.BASE_URL,
-  credentials: {
-    email: process.env.USER_EMAIL,
-    password: process.env.USER_PASSWORD,
-  },
+// env.config.js
+export const baseUrl = 'http://localhost:3001';
+
+export const credentials = {
+  email: process.env.USER_EMAIL,
+  password: process.env.USER_PASSWORD,
 };

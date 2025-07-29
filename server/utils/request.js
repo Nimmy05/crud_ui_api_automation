@@ -1,21 +1,22 @@
-const supertest = require('supertest');
+// utils/request.js
+import supertest from 'supertest';
 import app from '../app.js';
+import { baseUrl } from '../config/env.config.js';
 
+const request = supertest(baseUrl);
 
-function post(path) {
-  return supertest(app).post(path);
+export function post(path) {
+  return request.post(path);
 }
 
-function get(path) {
+export function get(path) {
   return supertest(app).get(path);
 }
 
-function put(path) {
+export function put(path) {
   return supertest(app).put(path);
 }
 
-function del(path) {
+export function del(path) {
   return supertest(app).delete(path);
 }
-
-module.exports = { post, get, put, del };

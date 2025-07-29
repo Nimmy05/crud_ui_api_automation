@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -19,7 +19,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "4.1",
-    "mongoose": "^7.2.3"
+    "mongoose": "^7.2.3",
+    "morgan": "^1.10.1"
   },
   "devDependencies": {
     "jest": "^30.0.5",

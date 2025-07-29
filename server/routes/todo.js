@@ -28,12 +28,12 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Create Todo (POST)
+// Create Todo (POST)
 router.post(
   '/todos',
   verifyToken,
   body('title').trim().notEmpty().withMessage('Title is required'),
-  body('completed').optional().isBoolean().withMessage('Completed must be boolean'),
-  handleValidationErrors,
+  handleValidationErrors, // ✅ add this instead of ...
   async (req, res) => {
     try {
       const userId = req.userId;
@@ -43,8 +43,8 @@ router.post(
       await newTodo.save();
 
       res.status(201).json({ message: 'Todo created successfully', todo: newTodo });
-    } catch (error) {
-      console.error('Create Todo error:', error);
+    } catch (err) {
+      console.error('Create Todo error:', err);
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -112,4 +112,5 @@ router.delete(
   }
 );
 
-export { router as todoRouter };
+export default router;
+

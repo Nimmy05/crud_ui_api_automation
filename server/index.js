@@ -1,35 +1,25 @@
-import express from 'express';
-import cors from 'cors';
+// server/index.js
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import  authRouter  from './routes/auth.js';
-import { todoRouter } from './routes/todo.js';
+import app from './app.js';
 
 dotenv.config();
 
+const PORT = process.env.PORT || 3001;
+const MONGO_URI = process.env.MONGODB_URI;
 
-const app = express();
-app.use(express.json());
-app.use(cors());
-
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-const db = mongoose.connection;
-db.on('connected', () => {
-  console.log('Connected to MongoDB');
+mongoose.connection.on('connected', () => {
+  console.log('✅ Connected to MongoDB');
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
 });
-db.on('error', (error) => {
-  console.error('Error connecting to MongoDB:', error);
+
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB connection error:', err);
 });
-
-
-app.use("/api/auth", authRouter);
-app.use("/api", todoRouter);
-
-
-app.listen(3001, () => {
-    console.log('Server is running!');
-})

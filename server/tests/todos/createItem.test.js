@@ -1,21 +1,21 @@
-const { post } = require('../../utils/request');
-const { loginAndGetToken } = require('../../utils/authHelper');
-const { baseUrl } = require('../../config/env.config');
-const { newItem } = require('../../data/testData');
+import request from 'supertest';
+import app from '../../app.js'; // Or wherever your express app is defined
+import { loginAndGetToken } from '../../utils/authHelper.js';
 
-describe('POST /create-todo', () => {  // update endpoint name here
-  let token;
+describe('Create Item API', () => {
+  it('should create an item', async () => {
+    const token = await loginAndGetToken();
+    const newItem = {
+      title: 'Write Playwright tests',
+      completed: false,
+    };
 
-  beforeAll(async () => {
-    token = await loginAndGetToken();
-  });
-
-  it('should create a new item', async () => {
-    const res = await post(`${baseUrl}/todos`)  // use /todos, not /create-todo
+    const res = await request(app)
+      .post('/api/todos') // ✅ fixed endpoint
       .set('Authorization', `Bearer ${token}`)
-      .send({ title: newItem.title, completed: false });  // send correct fields
+      .send(newItem);
 
-    expect(res.status).toBe(201);
-    expect(res.body.todo.title).toBe(newItem.title);  // response contains { todo: { title, ... } }
+    expect(res.statusCode).toBe(201);
+    expect(res.body.todo.title).toBe(newItem.title);
   });
 });

@@ -1,5 +1,5 @@
-const { post } = require('../../utils/request');
-const { baseUrl, credentials } = require('../../config/env.config');
+import post from '../../utils/request';
+import { baseUrl, credentials } from '../../config/env.config';
 
 describe('Login - Negative', () => {
   it('should fail with wrong password', async () => {
