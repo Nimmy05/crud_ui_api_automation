@@ -3,10 +3,10 @@ import UserModel from '../models/user.js';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const router = express.Router();
+const authRouter = express.Router();
 
 
-router.post("/login", async (req, res) => {
+authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -33,4 +33,4 @@ router.post("/login", async (req, res) => {
   }
 });
 
-export default router;
+export default authRouter;

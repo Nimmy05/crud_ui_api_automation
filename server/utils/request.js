@@ -1,22 +1,17 @@
-// utils/request.js
-import supertest from 'supertest';
-import app from '../app.js';
-import { baseUrl } from '../config/env.config.js';
+import express from 'express';
+import { createTodo, getTodos, updateTodo, deleteTodo } from '../controllers/todo.js';
+const router = express.Router();
 
-const request = supertest(baseUrl);
+// Get all todos
+router.get('/', getTodos);
 
-export function post(path) {
-  return request(app).post(path);
-}
+// Create a new todo
+router.post('/', createTodo);
 
-export function get(path) {
-  return supertest(app).get(path);
-}
+// Update a todo
+router.patch('/', updateTodo);  // You may want to add an ID param
 
-export function put(path) {
-  return supertest(app).put(path);
-}
+// Delete a todo
+router.delete('/', deleteTodo);  // You may want to add an ID param
 
-export function del(path) {
-  return supertest(app).delete(path);
-}
+export default router;
