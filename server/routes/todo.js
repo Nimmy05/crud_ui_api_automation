@@ -61,36 +61,6 @@ router.get('/todos', verifyToken, async (req, res) => {
   }
 });
 
-// Update Todo Partial (PATCH)
-router.patch(
-  '/todos/:id',
-  verifyToken,
-  param('id').isMongoId().withMessage('Invalid Todo ID'),
-  body('title').optional().trim().notEmpty().withMessage('Title cannot be empty'),
-  body('completed').optional().isBoolean().withMessage('Completed must be boolean'),
-  handleValidationErrors,
-  async (req, res) => {
-    try {
-      const todoId = req.params.id;
-      const userId = req.userId;
-
-      // Verify ownership
-      const todo = await TodoModel.findOne({ _id: todoId, userId });
-      if (!todo) return res.status(404).json({ message: 'Todo not found or unauthorized' });
-
-      if (req.body.title !== undefined) todo.title = req.body.title;
-      if (req.body.completed !== undefined) todo.completed = req.body.completed;
-
-      await todo.save();
-
-      res.status(200).json({ message: 'Todo updated successfully', todo });
-    } catch (error) {
-      console.error('Patch Todo error:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  }
-);
-
 // Full Update Todo (PUT)
 router.put(
   '/todos/:id',

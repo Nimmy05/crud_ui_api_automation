@@ -1,10 +1,10 @@
 // server/app.js
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import morgan from 'morgan';              // For HTTP request logging
-import dotenv from 'dotenv';
-import { todoRouter } from './routes/todo.js';
+const { express } = require ('express');
+const { cors } = require ('cors');
+const { bodyParser } = require ('body-parser');
+const { morgan }  = require ('morgan');              // For HTTP request logging
+const { dotenv } = require ('dotenv');
+const  { todoRouter } = require ('./routes/todo.js');
 
 dotenv.config();
 

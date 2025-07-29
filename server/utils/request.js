@@ -1,5 +1,6 @@
 const supertest = require('supertest');
-const {app} = require('../app'); // import your Express app
+import app from '../app.js';
+
 
 function post(path) {
   return supertest(app).post(path);
