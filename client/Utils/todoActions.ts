@@ -15,6 +15,13 @@ export const createTodo = async (page: Page, todoText: string) => {
     await expect(page.locator(`div span:text-is('${todoText}')`)).toBeVisible();
 };
 
+export const createMultipleToDo = async (page: Page, todos: string[]) => {
+  for (const todoText of todos) {
+    await createTodo(page, todoText);
+  }
+};
+
+
 export const deleteTodo = async (page: Page, todoText: string) => {
     const deleteButtonLocator = byButtonTextIs(page, constants.button_texts.delete);
 
