@@ -1,8 +1,8 @@
-// global-setup.ts
+
 import { chromium } from '@playwright/test';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Load .env variables
+dotenv.config();
 
 async function globalSetup() {
   const browser = await chromium.launch();

@@ -11,7 +11,7 @@ const Home = () => {
 
   const fetchTodos = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/read-todos", {
+      const response = await fetch("http://localhost:3001/api/", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -36,7 +36,7 @@ const Home = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3001/api/create-todo", {
+      const response = await fetch("http://localhost:3001/api/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -70,8 +70,8 @@ const Home = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/api/update-todo/${editId}`, {
-        method: "PATCH",
+      const response = await fetch(`http://localhost:3001/api/${editId}`, {
+        method: "PUT", 
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ const Home = () => {
     const deletedTodo = todos.find((t) => t._id === todoId)?.todo || "Unknown";
 
     try {
-      const response = await fetch(`http://localhost:3001/api/delete-todo/${todoId}`, {
+      const response = await fetch(`http://localhost:3001/api/${todoId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
