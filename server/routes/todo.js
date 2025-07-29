@@ -1,56 +1,145 @@
 import express from 'express';
+import { body, param, validationResult } from 'express-validator';
 import verifyToken from '../middleware/verifyToken.js';
 import TodoModel from '../models/todo.js';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 
 const router = express.Router();
 
-router.post("/create-todo", verifyToken, async (req, res) => {
-    const { todo } = req.body;
-    const userId = req.userId;
+// Apply Helmet for security headers
+router.use(helmet());
 
+// Simple rate limiting - customize as per need
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // max requests per IP
+  message: 'Too many requests, please try again later.',
+});
+router.use(limiter);
+
+// Helper middleware for input validation errors
+const handleValidationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  next();
+};
+
+// Create Todo (POST)
+router.post(
+  '/todos',
+  verifyToken,
+  body('title').trim().notEmpty().withMessage('Title is required'),
+  body('completed').optional().isBoolean().withMessage('Completed must be boolean'),
+  handleValidationErrors,
+  async (req, res) => {
     try {
-      const newTodo = new TodoModel({ todo, userId });
+      const userId = req.userId;
+      const { title, completed = false } = req.body;
+
+      const newTodo = new TodoModel({ title, completed, userId });
       await newTodo.save();
-      res.status(200).json({ message: "Todo created successfully" });
-    } catch (error) {
-      res.status(500).json({ message: "Error creating todo", error });
-    }
-});
-  
 
-router.get("/read-todos", verifyToken, async (req, res) => {
-    const userId = req.userId;
-    
+      res.status(201).json({ message: 'Todo created successfully', todo: newTodo });
+    } catch (error) {
+      console.error('Create Todo error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+);
+
+// Read Todos (GET)
+router.get('/todos', verifyToken, async (req, res) => {
+  try {
+    const todos = await TodoModel.find({ userId: req.userId });
+    res.status(200).json({ todos });
+  } catch (error) {
+    console.error('Read Todos error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Update Todo Partial (PATCH)
+router.patch(
+  '/todos/:id',
+  verifyToken,
+  param('id').isMongoId().withMessage('Invalid Todo ID'),
+  body('title').optional().trim().notEmpty().withMessage('Title cannot be empty'),
+  body('completed').optional().isBoolean().withMessage('Completed must be boolean'),
+  handleValidationErrors,
+  async (req, res) => {
     try {
-        const todos = await TodoModel.find({userId: userId});
-        res.status(200).json({ message: "Todo retreived successfully", todos });
+      const todoId = req.params.id;
+      const userId = req.userId;
+
+      // Verify ownership
+      const todo = await TodoModel.findOne({ _id: todoId, userId });
+      if (!todo) return res.status(404).json({ message: 'Todo not found or unauthorized' });
+
+      if (req.body.title !== undefined) todo.title = req.body.title;
+      if (req.body.completed !== undefined) todo.completed = req.body.completed;
+
+      await todo.save();
+
+      res.status(200).json({ message: 'Todo updated successfully', todo });
     } catch (error) {
-        res.status(500).json({ message: "Error creating todo", error });
+      console.error('Patch Todo error:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-});
+  }
+);
 
-router.patch("/update-todo/:id", verifyToken, async(req, res) => {
-    const todoId = req.params.id;
-    const { updatedTodo } = req.body;
-
+// Full Update Todo (PUT)
+router.put(
+  '/todos/:id',
+  verifyToken,
+  param('id').isMongoId().withMessage('Invalid Todo ID'),
+  body('title').trim().notEmpty().withMessage('Title is required'),
+  body('completed').isBoolean().withMessage('Completed must be boolean'),
+  handleValidationErrors,
+  async (req, res) => {
     try {
-        await TodoModel.findByIdAndUpdate(todoId, { todo: updatedTodo });
-        res.status(200).json({ message: "Todo updated successfully" });
+      const todoId = req.params.id;
+      const userId = req.userId;
+
+      const todo = await TodoModel.findOne({ _id: todoId, userId });
+      if (!todo) return res.status(404).json({ message: 'Todo not found or unauthorized' });
+
+      todo.title = req.body.title;
+      todo.completed = req.body.completed;
+
+      await todo.save();
+
+      res.status(200).json({ message: 'Todo replaced successfully', todo });
     } catch (error) {
-        res.status(500).json({ message: "Error creating todo", error });
+      console.error('Put Todo error:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-});
+  }
+);
 
-
-router.delete("/delete-todo/:id", verifyToken, async(req, res) => {
-    const todoId = req.params.id;
-
+// Delete Todo
+router.delete(
+  '/todos/:id',
+  verifyToken,
+  param('id').isMongoId().withMessage('Invalid Todo ID'),
+  handleValidationErrors,
+  async (req, res) => {
     try {
-        await TodoModel.findOneAndDelete({_id: todoId});
-        res.status(200).json({ message: "Todo deleted successfully" });
+      const todoId = req.params.id;
+      const userId = req.userId;
+
+      const deleted = await TodoModel.findOneAndDelete({ _id: todoId, userId });
+      if (!deleted) return res.status(404).json({ message: 'Todo not found or unauthorized' });
+
+      res.status(200).json({ message: 'Todo deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: "Error creating todo", error });
+      console.error('Delete Todo error:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-});
+  }
+);
 
 export { router as todoRouter };
