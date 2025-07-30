@@ -13,7 +13,7 @@ To demonstrate QA automation skills, this app includes **Playwright-based UI tes
 - 🔒 Protected routes for authenticated users only.
 - 🔁 Optional WebSocket integration for real-time updates.
 - 🧪 UI automation with Playwright.
-- 🧪 API testing with Postman or Supertest.
+- 🧪 API testing with REST API(Supertest), Postman.
 
 ---
 
@@ -26,28 +26,15 @@ To demonstrate QA automation skills, this app includes **Playwright-based UI tes
 | Database      | MongoDB (Mongoose)       |
 | Auth          | JWT                      |
 | UI Testing    | Playwright               |
-| API Testing   | Postman / Newman / Supertest |
-| Dev Tools     | Git, GitHub, VS Code     |
+| API Testing   | Postman / REST API / javaScript/ Supertest |
+| Dev Tools     | Git, CI/CD GitHub, VS Code     |
 
 ---
 
 ## 📂 Project Structure
 
 ```bash
-crud_ui_api_automation/
-└── MERN_Todo_App/
-    ├── client/               # React frontend
-    │   ├── public/
-    │   ├── src/
-    │   ├── tests/            # Playwright tests
-    │   ├── playwright.config.ts
-    │   └── ...
-    ├── server/               # Node.js + Express backend
-    │   ├── controllers/
-    │   ├── models/
-    │   ├── routes/
-    │   └── ...
-    └── README.md
+
 
 
 ## 🧭 Getting Started
@@ -77,11 +64,16 @@ Backend (server):
  - Add the following variables to the .env file:
 
    ```bash
-   MONGODB_URI=<your-mongodb-uri>
-   JWT_SECRET_KEY=<your-jwt-secret>
- 
+    MONGODB_URI=mongodb://localhost:27017/mern_todo_db
+    PORT=3001
+    JWT_SECRET_KEY=newUITe&t!23
+
+    BASE_URL=http://localhost:3001/api
+    USER_EMAIL=test67@gmail.com
+    USER_PASSWORD=abc123
+
 4.Start the Aplication
-Start MongoDB locally or connect to MongoDB 
+Connect to MongoDB 
 Backend:
 
    ```bash
@@ -129,10 +121,13 @@ npm init playwright@latest
 ```bash
 npx playwright test
 
-4. Open Playwright Test UI:
+4. Run single in headed mode:
 
 ```bash
-npx playwright test --ui
+npx playwright test tests/testname.spec.ts --headed
+✅ Before running UI tests, ensure that both the frontend (http://localhost:3000) and backend (http://localhost:3001) servers are up and running.
+
+🖥️ Open a new terminal window and run the above command to execute the Playwright test.
 
 5.View HTML test report:
 
@@ -140,22 +135,17 @@ npx playwright test --ui
 npx playwright show-report
 ✅ Ensure both frontend (localhost:3000) and backend (localhost:3001) servers are running before executing UI tests.
 
-API Tests (Postman or Newman)
-Run collection from Postman or CLI:
+API Tests (REST API)
+✅ Scenarios Automated
+POST /login
+GET /items
+POST /items
+PUT /items/:id
+DELETE /items/:id
 
 ```bash
-newman run postman_collection.json
-
-📄 Test Strategy
-A brief test plan is included under /tests or /docs:
-
-Coverage areas
-
-Tools used
-
-How to run
-
-Assumptions and limitations
+cd server
+npm test tests/testname.test.js
 
 🙋 Help & Support
 If you have questions or need setup assistance:
