@@ -11,12 +11,17 @@ export const getTodos = async (req, res) => {
 
 export const createTodo = async (req, res) => {
   const { todo } = req.body;
+
+  if (!todo || typeof todo !== 'string' || todo.trim() === '') {
+    return res.status(400).json({ error: 'Todo text is required' });
+  }
+
   try {
     const newTodo = new Todo({ todo });
     await newTodo.save();
-    res.status(201).json({ message: "Todo created", todo: newTodo });
+    res.status(201).json({ message: 'Todo created', todo: newTodo });
   } catch (err) {
-    res.status(500).json({ message: "Error creating todo" });
+    res.status(500).json({ message: 'Error creating todo' });
   }
 };
 

@@ -1,14 +1,14 @@
-import post from '../../utils/request';
-import { baseUrl, credentials } from '../../config/env.config';
+import api from '../../utils/request.js';
+import { credentials } from '../../config/env.config.js';
 
 describe('Login - Negative', () => {
   it('should fail with wrong password', async () => {
-    const res = await post(`${baseUrl}/auth/login`).send({ email: credentials.email, password: 'wrong' });
+    const res = await api.post('/api/auth/login').send({ email: credentials.email, password: 'wrong' });
     expect(res.status).toBe(401);
   });
 
   it('should fail with wrong credentials', async () => {
-    const res = await post(`${baseUrl}/auth/login`).send({ email: 'testrepmgmnt@gm.com', password: 'wrong' });
+    const res = await api.post('/api/auth/login').send({ email: 'invalid@example.com', password: 'wrong' });
     expect(res.status).toBe(401);
   });
 });

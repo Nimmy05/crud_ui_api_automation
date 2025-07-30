@@ -1,4 +1,5 @@
 import express from "express";
+import { verifyToken } from '../middleware/verifyToken.js';
 import {
   getTodos,
   createTodo,
@@ -8,9 +9,9 @@ import {
 
 const todoRouters = express.Router();
 
-todoRouters.get("/", getTodos);              // GET /api/
-todoRouters.post("/", createTodo);          // POST /api/
-todoRouters.put("/:id", updateTodo);        // PUT /api/:id
-todoRouters.delete("/:id", deleteTodo);     // DELETE /api/:id
+todoRouters.get("/", getTodos);             
+todoRouters.post("/", verifyToken, createTodo);          
+todoRouters.put("/:id", updateTodo);        
+todoRouters.delete("/:id", deleteTodo);     
 
 export default todoRouters;

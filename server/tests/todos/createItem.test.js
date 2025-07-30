@@ -1,41 +1,61 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
-import app from '../../app.js'; // Make sure the file has `.js` extension
-import dotenv from 'dotenv';
-dotenv.config();
+import app from '../../app.js';
+import { generateTodo } from '../../utils/dataGenerator.js';
+import { loginAndGetToken } from '../../utils/authHelper.js';
+import { credentials } from '../../config/env.config'
+
 let token;
 
 beforeAll(async () => {
-  const loginResponse = await request(app)
-    .post('/api/auth/login')
-    .send({ email: 'test67@gmail.com', password: 'abc123' });
+  const user = {
+    email: credentials.email,
+    password: credentials.password,
+  };
 
-  token = loginResponse.body.token;
-  console.log('Login token:', token);
-});
-import jwt from 'jsonwebtoken';
+  await request(app).post('/api/auth/register').send(user);
 
-test('Verify token manually', () => {
-  const secret = process.env.JWT_SECRET_KEY || 'your_test_secret';
-  const decoded = jwt.verify(token, secret);
-  console.log('Decoded token:', decoded);
-  expect(decoded).toHaveProperty('id');
+  token = await loginAndGetToken();
 });
 
-describe('POST /api/', () => {
-  it('should create an item', async () => {
-    const newItem = { todo: 'tests' };
+describe('POST /api/ - Create Todo', () => {
+  it('should create a unique todo item (positive)', async () => {
+    const newItem = { todo: generateTodo() };
 
     const response = await request(app)
       .post('/api/')
       .set('Authorization', `Bearer ${token}`)
       .send(newItem);
 
-    console.log('Authorization header sent:', `Bearer ${token}`);
-    console.log('Response status:', response.statusCode);
-    console.log('Response body:', response.body);
-
     expect(response.statusCode).toBe(201);
-    expect(response.body.todo.todo).toBe('tests');
+    expect(response.body.todo.todo).toBe(newItem.todo);
+  });
+
+  it('should fail when no todo is provided (negative)', async () => {
+    const response = await request(app)
+      .post('/api/')
+      .set('Authorization', `Bearer ${token}`)
+      .send({});
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toHaveProperty('error');
+  });
+
+  it('should fail with missing Authorization token (negative)', async () => {
+    const response = await request(app)
+      .post('/api/')
+      .send({ todo: generateTodo() });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toHaveProperty('error');
+  });
+
+  it('should fail with invalid Authorization token (negative)', async () => {
+    const response = await request(app)
+      .post('/api/')
+      .set('Authorization', `Bearer invalidtoken123`)
+      .send({ todo: generateTodo() });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toHaveProperty('error');
   });
 });

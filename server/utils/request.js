@@ -1,4 +1,6 @@
 import express from 'express';
+import request from 'supertest';
+import app from '../app';
 import { createTodo, getTodos, updateTodo, deleteTodo } from '../controllers/todo.js';
 const router = express.Router();
 
@@ -9,9 +11,9 @@ router.get('/', getTodos);
 router.post('/', createTodo);
 
 // Update a todo
-router.patch('/', updateTodo);  // You may want to add an ID param
+router.patch('/', updateTodo);  
 
 // Delete a todo
-router.delete('/', deleteTodo);  // You may want to add an ID param
+router.delete('/', deleteTodo);  
 
-export default router;
+export default request(app);

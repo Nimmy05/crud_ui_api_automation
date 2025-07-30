@@ -1,18 +1,17 @@
 import request from 'supertest';
-import app from '../app.js'; 
+import app from '../app.js';
 import { credentials } from '../config/env.config.js';
 
 export async function loginAndGetToken() {
-
-  const res = await request(app)
+  const response = await request(app)
     .post('/api/auth/login')
     .send(credentials);
 
-  // console.log('Login response:', res.body);
-
-  if (!res.body || !res.body.token) {
-    throw new Error('Token not received in login response');
+  if (response.status !== 200) {
+    throw new Error('Login failed during test setup');
   }
 
-  return res.body.token;
+
+  return response.body.token;
 }
+
