@@ -2,7 +2,7 @@
 import express  from 'express' ;
 import cors  from 'cors' ;
 import bodyParser  from 'body-parser' ;
-import morgan   from 'morgan' ;              // For HTTP request logging
+import morgan   from 'morgan' ;              
 import dotenv  from 'dotenv' ;
 import authRouter from './routes/auth.js';
 import todoRouters from './routes/todo.js';
@@ -15,7 +15,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(morgan('dev'));  // Logs requests to the console
+app.use(morgan('dev')); 
 
 // Routes
 app.use('/api/auth', authRouter);

@@ -14,12 +14,12 @@ mongoose.connect(MONGO_URI, {
 });
 
 mongoose.connection.on('connected', () => {
-  console.log('✅ Connected to MongoDB');
+  console.log('Connected to MongoDB');
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
   });
 });
 
 mongoose.connection.on('error', (err) => {
-  console.error('❌ MongoDB connection error:', err);
+  console.error('MongoDB connection error:', err);
 });
