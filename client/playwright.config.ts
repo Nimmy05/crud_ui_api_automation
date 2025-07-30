@@ -7,7 +7,7 @@ export default defineConfig({
   testDir: './tests',
   timeout: 30 * 1000,
   use: {
-    baseURL: process.env.BASE_URL,
+    baseURL: process.env.REACT_BASE_URL,
     trace: 'on-first-retry',
   },
   projects: [
