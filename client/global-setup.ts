@@ -19,7 +19,7 @@ async function globalSetup() {
   await page.click('button[type="submit"]');
 
   // Wait for successful login
-  await page.waitForURL(`${baseUrl}/`)
+  await page.waitForURL(`http://localhost:3000/`)
   
   // Save login state to file
   await page.context().storageState({ path: './storage/storageState.json' });
