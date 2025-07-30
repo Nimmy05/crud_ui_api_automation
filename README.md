@@ -33,8 +33,7 @@ To demonstrate QA automation skills, this app includes **Playwright-based UI tes
 
 ## 📂 Project Structure
 
-```bash
-
+![Alt text](C:\Users\nimmy\crud_ui_api_automation\MERN_Todo_App\folder-structure.txt)
 
 
 ## 🧭 Getting Started
@@ -135,7 +134,7 @@ npx playwright test tests/testname.spec.ts --headed
 npx playwright show-report
 ✅ Ensure both frontend (localhost:3000) and backend (localhost:3001) servers are running before executing UI tests.
 
-API Tests (REST API)
+6. API Tests (REST API)
 ✅ Scenarios Automated
 POST /login
 GET /items
