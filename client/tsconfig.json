@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "types": ["node", "playwright"],
     "paths": {
       "@utils/*": [
         "utils/*"
