@@ -40,8 +40,8 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "MONGO_URL=mongodb://localhost:27017/testdb" >> $GITHUB_ENV
-          echo "JWT_SECRET=testsecret" >> $GITHUB_ENV
+          echo "MONGO_URL=mongodb://localhost:27017/mern_todo_db" >> $GITHUB_ENV
+          echo "JWT_SECRET_KEY=newUITe&t!23" >> $GITHUB_ENV
 
       - name: Start backend server
         working-directory: server
