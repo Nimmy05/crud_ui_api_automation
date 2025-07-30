@@ -18,9 +18,8 @@ async function globalSetup() {
   await page.fill('input[name="password"]', password);
   await page.click('button[type="submit"]');
 
-  // await test.step(`Navigate to the '${constants.headings.todo_list}'`, async () => {
-            await page.waitForURL(`${baseUrl}/`);
-        // });
+  // Wait for successful login
+  await page.waitForURL(`${baseUrl}/`)
   
   // Save login state to file
   await page.context().storageState({ path: './storage/storageState.json' });

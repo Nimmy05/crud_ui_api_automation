@@ -8,9 +8,9 @@ test.describe(`Automate the 'Update ToDo' of 'MERN Todo App'`, () => {
         const newToDoItem: string = thisTestConfig.new_todo;
         const updateToDoItem: string = thisTestConfig.update_todo;
 
-        // await test.step(`Navigate to the '${constants.headings.todo_list}'`, async () => {
-        //     await page.goto(`${baseURL}/`);
-        // });
+        await test.step(`Navigate to the '${constants.headings.todo_list}'`, async () => {
+            await page.goto(`${baseURL}/`);
+        });
 
         await test.step(`Verify the heading '${constants.headings.todo_list}' is visible`, async () => {
             await expect(page.getByRole('heading', { level: 2 })).toHaveText(constants.headings.todo_list);
