@@ -21,8 +21,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "test:e2e": "playwright test",
-    "test:setup": "ts-node global-setup.ts",
-    "test:teardown": "ts-node global-teardown.ts",
+    "test:setup": "ts-node -r tsconfig-paths/register global-setup.ts",
+    "test:teardown": "ts-node -r tsconfig-paths/register global-teardown.ts",
     "test:ci": "npm run test:setup && npm run test:e2e && npm run test:teardown"
   },
   "eslintConfig": {
@@ -50,6 +50,7 @@
     "@types/node": "^24.1.0",
     "playwright": "^1.54.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^4.9.5"
   }
 }
