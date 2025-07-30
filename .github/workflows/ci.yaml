@@ -42,6 +42,7 @@ jobs:
         run: |
           echo "MONGO_URL=mongodb://localhost:27017/mern_todo_db" >> $GITHUB_ENV
           echo "JWT_SECRET_KEY=newUITe&t!23" >> $GITHUB_ENV
+          echo "BASE_URL=http://localhost:3000" >> $GITHUB_ENV
 
       - name: Start backend server
         working-directory: server
