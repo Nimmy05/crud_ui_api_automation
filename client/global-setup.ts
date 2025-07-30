@@ -8,7 +8,7 @@ async function globalSetup() {
   const browser = await chromium.launch();
   const page = await browser.newPage();
 
-  const baseUrl = process.env.BASE_URL!;
+  const baseUrl = process.env.REACT_BASE_URL!;
   const email = process.env.USER_EMAIL!;
   const password = process.env.USER_PASSWORD!;
 

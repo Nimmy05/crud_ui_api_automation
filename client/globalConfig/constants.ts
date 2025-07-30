@@ -28,4 +28,4 @@ export const constants: any = {
 }
 
 export const timeout: number = 5000;
-export const baseURL = process.env.BASE_URL;
+export const baseURL = process.env.REACT_BASE_URL;
