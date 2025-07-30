@@ -2,7 +2,7 @@ name: CI Pipeline for UI & API Tests
 
 on:
   push:
-    branches: [main , master]
+    branches: [main, master]
   pull_request:
     branches: [main, master]
 
@@ -38,26 +38,54 @@ jobs:
         working-directory: client
         run: npm install
 
-      - name: Set environment variables
+      - name: Create backend .env
+        working-directory: server
         run: |
-          echo "MONGO_URL=mongodb://localhost:27017/mern_todo_db" >> $GITHUB_ENV
-          echo "JWT_SECRET_KEY=newUITe&t!23" >> $GITHUB_ENV
-          echo "BASE_URL=http://localhost:3000" >> $GITHUB_ENV
-          echo "USER_EMAIL=test67@gmail.com" >> $GITHUB_ENV
-          echo "USER_PASSWORD=abc123" >> $GITHUB_ENV
+          echo "MONGODB_URI=mongodb://localhost:27017/mern_todo_db" > .env
+          echo "PORT=3001" >> .env
+          echo "JWT_SECRET_KEY=newUITe&t!23" >> .env
+          echo "BASE_URL=http://localhost:3001/api" >> .env
+          echo "USER_EMAIL=test67@gmail.com" >> .env
+          echo "USER_PASSWORD=abc123" >> .env
+
+      - name: Create frontend .env
+        working-directory: client
+        run: |
+          echo "REACT_BASE_URL=http://localhost:3000" > .env
+          echo "USER_EMAIL=test67@gmail.com" >> .env
+          echo "USER_PASSWORD=abc123" >> .env
 
       - name: Start backend server
         working-directory: server
         run: |
-          nohup npm start &
+          nohup npm run dev &
 
       - name: Start frontend server
         working-directory: client
         run: |
           nohup npm start &
 
-      - name: Wait for servers to boot
-        run: sleep 20
+      - name: Wait for backend to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3001/api; then
+              echo "✅ Backend is ready"
+              break
+            fi
+            echo "⏳ Waiting for backend..."
+            sleep 2
+          done
+
+      - name: Wait for frontend to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3000; then
+              echo "✅ Frontend is ready"
+              break
+            fi
+            echo "⏳ Waiting for frontend..."
+            sleep 2
+          done
 
       - name: Install Playwright browsers
         working-directory: client
