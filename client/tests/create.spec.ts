@@ -1,9 +1,10 @@
+import 'tsconfig-paths/register';
 import { test, expect } from '@playwright/test';
-import { baseURL, constants } from 'globalConfig/constants';
-import { createTodo, deleteAllTodos } from 'utils/todoActions';
-import { button, verifyAndCloseAlert } from 'utils/baseUtils';
-import thisTestConfig from '@configs/create.config';
-import { byButtonTextIs } from 'utils/locatorUtils';
+import { baseURL, constants } from '../globalConfig/constants';
+import { createTodo, deleteAllTodos } from '../utils/todoActions';
+import { button, verifyAndCloseAlert } from '../utils/baseUtils';
+import thisTestConfig  from '../configs/create.config';
+import { byButtonTextIs } from '../utils/locatorUtils';
 
 test.describe(`Automate the 'Create ToDo' of 'MERN Todo App'`, () => {
     test(`Should create ToDo Item`, async ({ page }) => {

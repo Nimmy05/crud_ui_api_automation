@@ -1,3 +1,4 @@
+require('tsconfig-paths/register');
 import { chromium } from '@playwright/test';
 import dotenv from 'dotenv';
 

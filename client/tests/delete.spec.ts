@@ -1,7 +1,8 @@
+import 'tsconfig-paths/register';
 import { test, expect } from '@playwright/test';
-import { baseURL, constants } from 'globalConfig/constants';
-import { createTodo, deleteAllTodos, deleteTodo, createMultipleToDo } from 'utils/todoActions';
-import thisTestConfig from '@configs/create.config';
+import { baseURL, constants } from '../globalConfig/constants';
+import { createTodo, deleteAllTodos, deleteTodo, createMultipleToDo } from '../utils/todoActions';
+import thisTestConfig from '../configs/create.config';
 
 test.describe(`Automate the 'Delete' functionality of  'MERN Todo App'`, () => {
     test(`Should delete the ToDo Item`, async ({ page }) => {

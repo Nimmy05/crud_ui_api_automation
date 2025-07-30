@@ -1,7 +1,8 @@
+import 'tsconfig-paths/register';
 import { Page, expect, Locator } from '@playwright/test';
-import { button, closeAlert, verifyAndCloseAlert, inputField } from 'utils/baseUtils';
-import { constants } from 'globalConfig/constants';
-import { byButtonTextIs, byInputValue } from 'utils/locatorUtils';
+import { button, closeAlert, verifyAndCloseAlert, inputField } from '../utils/baseUtils';
+import { constants } from '../globalConfig/constants';
+import { byButtonTextIs, byInputValue } from '../utils/locatorUtils';
 
 export const createTodo = async (page: Page, todoText: string) => {
     const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);

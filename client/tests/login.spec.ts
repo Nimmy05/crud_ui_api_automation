@@ -1,10 +1,11 @@
+import 'tsconfig-paths/register';
 import { test, expect, Locator } from '@playwright/test';
-import { byButtonTextIs, byInputName } from 'utils/locatorUtils';
-import { constants } from 'globalConfig/constants';
-import { inputField, resetFormFields, closeAlert } from 'utils/baseUtils';
-import thisTestConfig from 'configs/login.config';
-import { LoginUser } from 'src/data/interfaces';
-import { baseURL } from 'globalConfig/constants';
+import { byButtonTextIs, byInputName } from '../utils/locatorUtils';
+import { constants } from '../globalConfig/constants';
+import { inputField, resetFormFields, closeAlert } from '../utils/baseUtils';
+import thisTestConfig from '../configs/login.config';
+import { LoginUser } from '../src/data/interfaces';
+import { baseURL } from '../globalConfig/constants';
 
 test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
   test('@noLogin Verify login with various credential combinations', async ({ page }) => {

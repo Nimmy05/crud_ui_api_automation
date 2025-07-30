@@ -18,9 +18,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "playwright test",
     "eject": "react-scripts eject",
-    "test:e2e": "playwright test",
+    "test:e2e": "node -r ts-node/register -r tsconfig-paths/register node_modules/@playwright/test/cli.js",
     "test:setup": "ts-node -r tsconfig-paths/register global-setup.ts",
     "test:teardown": "ts-node -r tsconfig-paths/register global-teardown.ts",
     "test:ci": "npm run test:setup && npm run test:e2e && npm run test:teardown"

@@ -1,10 +1,13 @@
+require('tsconfig-paths/register');
 import { defineConfig } from '@playwright/test';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
 export default defineConfig({
-  globalSetup: './global-setup',
   testDir: './tests',
+  globalSetup: './global-setup.ts',
+  globalTeardown: './global-teardown.ts',
   timeout: 30 * 1000,
   use: {
     baseURL: process.env.REACT_BASE_URL,
