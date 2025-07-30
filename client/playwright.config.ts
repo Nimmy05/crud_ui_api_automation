@@ -1,4 +1,3 @@
-// playwright.config.ts
 import { defineConfig } from '@playwright/test';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -14,7 +13,6 @@ export default defineConfig({
   projects: [
     {
       name: 'Authenticated Tests',
-      // All tests EXCEPT those with @noLogin
       grepInvert: /@noLogin/,
       use: {
         storageState: './storage/storageState.json',
@@ -22,11 +20,14 @@ export default defineConfig({
     },
     {
       name: 'Login Tests',
-      // Only tests with @noLogin
       grep: /@noLogin/,
       use: {
         storageState: undefined,
       },
     },
+  ],
+  reporter: [
+    ['list'], // optional: console output in list format
+    ['html', { outputFolder: 'playwright-report', open: 'never' }] // generate HTML report
   ],
 });
