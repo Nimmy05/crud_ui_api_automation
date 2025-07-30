@@ -7,9 +7,9 @@ test.describe(`Automate the 'Delete' functionality of  'MERN Todo App'`, () => {
     test(`Should delete the ToDo Item`, async ({ page }) => {
         const newToDoItem: string = thisTestConfig.new_todo;
 
-        await test.step(`Navigate to the '${constants.headings.todo_list}'`, async () => {
-            await page.goto(`${baseURL}/`);
-        });
+        // await test.step(`Navigate to the '${constants.headings.todo_list}'`, async () => {
+        //     await page.goto(`${baseURL}/`);
+        // });
 
         await test.step(`Verify the heading '${constants.headings.todo_list}' is visible`, async () => {
             await expect(page.getByRole('heading', { level: 2 })).toHaveText(constants.headings.todo_list);

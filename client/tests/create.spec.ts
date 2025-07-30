@@ -11,9 +11,9 @@ test.describe(`Automate the 'Create ToDo' of 'MERN Todo App'`, () => {
         const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
 
 
-        await test.step(`Navigate to the '${constants.headings.todo_list}'`, async () => {
-            await page.goto(`${baseURL}/`);
-        });
+        // await test.step(`Navigate to the '${constants.headings.todo_list}'`, async () => {
+        //     await page.goto(`${baseURL}/`);
+        // });
 
         await test.step(`Verify the heading '${constants.headings.todo_list}' is visible`, async () => {
             await expect(page.getByRole('heading', { level: 2 })).toHaveText(constants.headings.todo_list);
