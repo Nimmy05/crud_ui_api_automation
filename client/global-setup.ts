@@ -1,4 +1,3 @@
-
 import { chromium } from '@playwright/test';
 import dotenv from 'dotenv';
 
@@ -18,10 +17,14 @@ async function globalSetup() {
   await page.fill('input[name="password"]', password);
   await page.click('button[type="submit"]');
 
-  // Wait for successful login
-  await page.waitForURL(`http://localhost:3000/`)
-  
-  // Save login state to file
+  try {
+    await page.waitForURL(new RegExp(`^${baseUrl.replace(/\/$/, '')}(/)?`), { timeout: 30000 });
+  } catch (e) {
+    await page.screenshot({ path: 'login-failed.png' });
+    console.log(await page.content());
+    throw e;
+  }
+
   await page.context().storageState({ path: './storage/storageState.json' });
 
   await browser.close();
