@@ -33,8 +33,7 @@ To demonstrate QA automation skills, this app includes **Playwright-based UI tes
 
 ## 📂 Project Structure
 
-![Alt text]("C:\Users\nimmy\OneDrive\Desktop\57b8167c-19f2-4700-ad42-a28807da2be8 (1).png")
-
+<img width="1024" height="1536" alt="57b8167c-19f2-4700-ad42-a28807da2be8 (1)" src="https://github.com/user-attachments/assets/a09a7f78-48c3-489c-aa76-2e007897036d" />
 
 ## 🧭 Getting Started
 
