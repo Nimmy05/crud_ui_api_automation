@@ -23,7 +23,7 @@ async function globalSetup() {
 
   const alerts = page.getByRole('alert');
   const loginAlert = alerts.filter({ hasText: `${email} is Logged In` }).first();
-  await expect(loginAlert).toBeVisible({ timeout });
+  await expect(loginAlert).toBeVisible();
 
   await page.waitForURL(`${baseUrl}/`)
 
