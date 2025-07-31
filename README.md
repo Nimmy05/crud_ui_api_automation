@@ -33,8 +33,27 @@ To demonstrate QA automation skills, this app includes **Playwright-based UI tes
 
 ## 📂 Project Structure
 
-<img width="1024" height="1536" alt="57b8167c-19f2-4700-ad42-a28807da2be8 (1)" src="https://github.com/user-attachments/assets/a09a7f78-48c3-489c-aa76-2e007897036d" />
-
+MERN_TO_APP
+   client
+      src
+      config
+      globalConfig
+      global-setup
+      global-teardown
+      tests
+      utils
+      .env
+      .....
+   server
+      controllers
+      models
+      routes
+      configs
+      tests
+      app.js
+      index.js
+      .env
+      .....
 ## 🧭 Getting Started
 
 1. Clone the repository
