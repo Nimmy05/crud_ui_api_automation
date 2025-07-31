@@ -3,12 +3,11 @@ import express  from 'express' ;
 import cors  from 'cors' ;
 import bodyParser  from 'body-parser' ;
 import morgan   from 'morgan' ;              
-import dotenv  from 'dotenv' ;
 import authRouter from './routes/auth.js';
 import todoRouters from './routes/todo.js';
+import { config } from 'dotenv';
 
-
-dotenv.config();
+config();
 
 const app = express();
 

@@ -1,9 +1,8 @@
-// server/index.js
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import app from './app.js';
+import { config } from 'dotenv';
 
-dotenv.config();
+config();
 
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGODB_URI;
