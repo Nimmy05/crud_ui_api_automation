@@ -4,9 +4,15 @@
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd server && npm run dev",
-    "client": "cd client && npm start"
+    "client": "cd client && npm start",
+    "test": "node tsconfig-paths-bootstrap.js"
   },
   "devDependencies": {
-    "concurrently": "^8.0.0"
+    "concurrently": "^8.0.0",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "dependencies": {
+    "glob": "^11.0.3"
   }
 }
