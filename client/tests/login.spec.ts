@@ -12,7 +12,7 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
     const emailField: Locator = byInputName(page, 'email');
     const passwordField: Locator = byInputName(page, 'password');
     const loginButton: Locator = byButtonTextIs(page, constants.button_texts.login);
-    const user: LoginUser = thisTestConfig.login_user;
+    const user: LoginUser = thisTestConfig.login_user.login_test_user_one;
 
 
     await test.step('Navigate to login page', async () => {
@@ -88,5 +88,8 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
       await expect(page.getByText(`${user.email} is Logged In`)).toBeVisible();
       await expect(page.getByRole('heading', { level: 2 })).toHaveText(constants.headings.todo_list);
     });
+
   });
+
 });
+

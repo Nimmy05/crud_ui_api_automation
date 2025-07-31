@@ -1,8 +1,9 @@
 require('tsconfig-paths/register');
 import { defineConfig } from '@playwright/test';
 
-import dotenv from 'dotenv';
-dotenv.config();
+import { config } from 'dotenv';
+
+config();
 
 export default defineConfig({
   testDir: './tests',

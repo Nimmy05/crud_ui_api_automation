@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",       // relative to client folder
+    "paths": {
+      "utils/*": ["utils/*"],
+      "src/*": ["src/*"],
+      "globalConfig/*": ["globalConfig/*"]
+    }
+  }
+}
