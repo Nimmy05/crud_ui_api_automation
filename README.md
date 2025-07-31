@@ -33,7 +33,7 @@ To demonstrate QA automation skills, this app includes **Playwright-based UI tes
 
 ## 📂 Project Structure
 
-![Alt text](C:\Users\nimmy\crud_ui_api_automation\MERN_Todo_App\folder-structure.txt)
+![Alt text]("C:\Users\nimmy\OneDrive\Desktop\57b8167c-19f2-4700-ad42-a28807da2be8 (1).png")
 
 
 ## 🧭 Getting Started
