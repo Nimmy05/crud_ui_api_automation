@@ -1,5 +1,5 @@
 import { chromium, expect } from '@playwright/test';
-import { writeFileSync } from 'fs';
+import { constants } from 'globalConfig/constants';
 import path from 'path';
 import dotenv from 'dotenv';
 
