@@ -21,11 +21,15 @@ async function globalSetup() {
 
   page.getByRole('button', { name: 'Login' }).click();
 
-  const alerts = page.getByRole('alert');
-  const loginAlert = alerts.filter({ hasText: `${email} is Logged In` }).first();
-  await expect(loginAlert).toBeVisible();
+  // const alerts = page.getByRole('alert');
+  // const loginAlert = alerts.filter({ hasText: `${email} is Logged In` }).first();
+  // await expect(loginAlert).toBeVisible();
 
   await page.waitForURL(`${baseUrl}/`)
+  await page.waitForLoadState('networkidle');
+
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText('Todo List');
+
 
   await page.context().storageState({ path: './storage/storageState.json' });
 
