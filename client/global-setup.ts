@@ -30,10 +30,9 @@ async function globalSetup() {
 //   // ✅ Ensure that dashboard is loaded (adjust as per your app)
 //    const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
 //   await expect(inputFieldLocator).toBeVisible();
-await Promise.all([
-  page.waitForNavigation({ url: `${baseURL}/` }),
-  page.getByRole('button', { name: 'Login' }).click(),
-]);
+
+  await page.getByRole('button', { name: 'Login' }).click();
+
 
 // ✅ Wait for input field to appear
 const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
