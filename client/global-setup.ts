@@ -1,5 +1,4 @@
 import 'tsconfig-paths/register';
-import { timeout } from 'globalConfig/constants';
 import { chromium, expect } from '@playwright/test';
 import { config } from 'dotenv';
 
@@ -13,23 +12,27 @@ async function globalSetup() {
   const email = process.env.USER_EMAIL!;
   const password = process.env.USER_PASSWORD!;
 
+  // Go to login page
   await page.goto(`${baseUrl}/login`);
 
+  // Fill in credentials
   await page.fill('input[name="email"]', email);
   await page.fill('input[name="password"]', password);
-  await page.click('button[type="submit"]');
 
+  // Click login and wait for navigation
+  await Promise.all([
+    page.waitForNavigation({ waitUntil: 'networkidle' }),
+    page.click('button[type="submit"]'),
+  ]);
 
-  // const alerts = page.getByRole('alert');
-  // const loginAlert = alerts.filter({ hasText: `${email} is Logged In` }).first();
-  // await expect(loginAlert).toBeVisible();
+  // ✅ Instead of checking alert, wait for stable post-login indicator
+  // Option 1: URL check
+  await expect(page).toHaveURL(`${baseUrl}/`);
 
-  // await page.waitForURL(`${baseUrl}/`)
-  
+  // Option 2: Check for dashboard element (replace with a real one from your app)
+  await expect(page.locator('h2')).toHaveText('Todo List');
 
-  // await expect(page.getByRole('heading', { level: 2 })).toHaveText('Todo List');
-
-
+  // Save storage state
   await page.context().storageState({ path: './storage/storageState.json' });
 
   await browser.close();
