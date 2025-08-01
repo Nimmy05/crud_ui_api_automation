@@ -32,9 +32,52 @@ To demonstrate QA automation skills, this app includes **Playwright-based UI tes
 ---
 
 ## 📂 Project Structure
+MERN_Todo_App/
+.github/
+    └── workflows/                     # CI/CD GitHub Actions
+        └── ci.yaml
+├── client/                            # React frontend
+│   ├── public/                        # Static assets
+│   ├── src/                           # Frontend source code
+│   │   ├── components/                # Reusable React components
+│   │   ├── pages/                     # Page-level components (e.g., TodoPage, LoginPage)
+│   │   ├── services/                  # API calls using axios or fetch
+│   │   ├── App.tsx                    # Root component
+│   │   └── main.tsx                   # Entry point
+│   ├── package.json                   # Frontend dependencies and scripts
+│   └── tsconfig.json                  # TypeScript config for frontend
 
-![Alt text]("C:\Users\nimmy\OneDrive\Desktop\57b8167c-19f2-4700-ad42-a28807da2be8 (1).png")
+├── server/                            # Node.js + Express backend
+│   ├── controllers/                   # Logic for handling routes (e.g., todos, auth)
+│   ├── models/                        # Mongoose models (e.g., User, Todo)
+│   ├── routes/                        # Route definitions
+│   ├── middleware/                    # Auth, error handlers, etc.
+│   ├── config/                        # DB connection, environment setup
+│   ├── index.ts                       # Main entry point
+│   ├── .env                           # Server environment variables
+│   ├── package.json                   # Backend dependencies and scripts
+│   └── tsconfig.json                  # TypeScript config for backend
 
+├── tests/                             # Playwright test automation
+│   ├── create.config.ts               # Create todo test config
+│   ├── update.config.ts               # Update todo test config
+│   ├── delete.config.ts               # Delete todo test config
+│   ├── utils/                         # Shared utility functions
+│   │   ├── baseUtils.ts               # Common actions (click, fill, verify)
+│   │   └── locatorUtils.ts            # Locator helpers (e.g., byButtonText)
+│   ├── globalConfig/
+│   │   └── constants.ts               # App-wide constants
+│   └── testData/                      # Static test data
+
+├── playwright.config.ts               # Playwright config
+├── tsconfig.json                      # Global TypeScript config
+├── .env                               # Root environment variables
+├── tsconfig-paths-bootstrap.js        # tsconfig-path alias support for tests
+├── README.md                          # Project documentation
+├── package.json                       # Root package manager (optional)
+└── .github/
+    └── workflows/                     # CI/CD GitHub Actions
+        └── playwright.yml             # Example CI pipeline for automation
 
 ## 🧭 Getting Started
 
