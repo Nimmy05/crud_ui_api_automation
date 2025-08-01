@@ -23,12 +23,13 @@ async function globalSetup() {
 
   // 🟡 Option 1: Wait for a success toast (react-toastify)
   const successToast = page.locator('.Toastify__toast--success');
-  if (await successToast.isVisible({ timeout: 3000 })) {
-    await expect(successToast).toBeVisible();
-  }
+  if (await successToast.isVisible({ timeout: 5000 })) {
+  await successToast.waitFor({ state: 'detached', timeout: 10000 }); // wait until it disappears
+}
 
   // ✅ Ensure that dashboard is loaded (adjust as per your app)
-  await expect(page.getByRole('heading', { name: 'Todo List' })).toBeVisible();
+   const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
+  await expect(inputFieldLocator).toBeVisible();
 
   // ✅ Save login state
   const storagePath = path.resolve(__dirname, './storage/storageState.json');
