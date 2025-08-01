@@ -19,15 +19,12 @@ async function globalSetup() {
   await page.fill('input[name="email"]', email);
   await page.fill('input[name="password"]', password);
 
-  // Click login and wait for navigation
-  await Promise.all([
-    page.waitForNavigation({ waitUntil: 'networkidle' }),
-    page.click('button[type="submit"]'),
-  ]);
 
-  // ✅ Instead of checking alert, wait for stable post-login indicator
-  // Option 1: URL check
-  await expect(page).toHaveURL(`${baseUrl}/`);
+  page.click('button[type="submit"]'),
+
+
+    await expect(page.getByRole('heading', { name: 'Todo List' })).toBeVisible();
+
 
   // Option 2: Check for dashboard element (replace with a real one from your app)
   await expect(page.locator('h2')).toHaveText('Todo List');
