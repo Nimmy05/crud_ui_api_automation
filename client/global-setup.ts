@@ -19,7 +19,6 @@ async function globalSetup() {
   await page.fill('input[name="password"]', password);
   await page.click('button[type="submit"]');
 
-  page.getByRole('button', { name: 'Login' }).click();
 
   // const alerts = page.getByRole('alert');
   // const loginAlert = alerts.filter({ hasText: `${email} is Logged In` }).first();
