@@ -1,5 +1,6 @@
 import { chromium, expect } from '@playwright/test';
 import { constants } from 'globalConfig/constants';
+import { closeAlert } from 'utils/baseUtils';
 import path from 'path';
 import dotenv from 'dotenv';
 
@@ -32,15 +33,11 @@ async function globalSetup() {
 //   await expect(inputFieldLocator).toBeVisible();
 
 // ✅ Wait for navigation after login
-await Promise.all([
-  page.waitForNavigation({ waitUntil: 'networkidle' }),
   page.getByRole('button', { name: 'Login' }).click()
-]);
 
-  const successToast = page.locator('.Toastify__toast--success');
-  if (await successToast.isVisible({ timeout: 5000 })) {
-  await successToast.waitFor({ state: 'detached', timeout: 10000 }); // wait until it disappears
-}
+
+  await closeAlert(page);
+
 
 
 // ✅ Ensure you're on the correct page
