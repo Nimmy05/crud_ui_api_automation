@@ -1,36 +1,38 @@
-import 'tsconfig-paths/register';
 import { chromium, expect } from '@playwright/test';
-import { config } from 'dotenv';
+import { writeFileSync } from 'fs';
+import path from 'path';
+import dotenv from 'dotenv';
 
-config();
+// Load environment variables from .env
+dotenv.config();
 
 async function globalSetup() {
   const browser = await chromium.launch();
-  const page = await browser.newPage();
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
-  const baseUrl = process.env.REACT_BASE_URL!;
-  const email = process.env.USER_EMAIL!;
-  const password = process.env.USER_PASSWORD!;
+  const baseURL = process.env.BASE_URL || 'http://localhost:3000';
+  const email = process.env.TEST_USER_EMAIL || 'test67@gmail.com';
+  const password = process.env.TEST_USER_PASSWORD || 'abc123';
 
-  // Go to login page
-  await page.goto(`${baseUrl}/login`);
+  await page.goto(`${baseURL}/login`);
 
-  // Fill in credentials
-  await page.fill('input[name="email"]', email);
-  await page.fill('input[name="password"]', password);
+  await page.getByRole('textbox', { name: 'Email' }).fill(email);
+  await page.getByRole('textbox', { name: 'Password' }).fill(password);
+  await page.getByRole('button', { name: 'Login' }).click();
 
+  // 🟡 Option 1: Wait for a success toast (react-toastify)
+  const successToast = page.locator('.Toastify__toast--success');
+  if (await successToast.isVisible({ timeout: 3000 })) {
+    await expect(successToast).toBeVisible();
+  }
 
-  page.click('button[type="submit"]'),
+  // ✅ Ensure that dashboard is loaded (adjust as per your app)
+  await expect(page.getByRole('heading', { name: 'Todo List' })).toBeVisible();
 
-
-    await expect(page.getByRole('heading', { name: 'Todo List' })).toBeVisible();
-
-
-  // Option 2: Check for dashboard element (replace with a real one from your app)
-  await expect(page.locator('h2')).toHaveText('Todo List');
-
-  // Save storage state
-  await page.context().storageState({ path: './storage/storageState.json' });
+  // ✅ Save login state
+  const storagePath = path.resolve(__dirname, './storage/storageState.json');
+  await context.storageState({ path: storagePath });
 
   await browser.close();
 }
