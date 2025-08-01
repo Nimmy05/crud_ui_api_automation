@@ -85,7 +85,8 @@ test.describe(`Automate the 'MERN Todo App' login page functionalities`, () => {
     });
 
     await test.step('Verify login success and redirection', async () => {
-      await expect(page.getByText(`${user.email} is Logged In`)).toBeVisible();
+      // await expect(page.getByText(`${user.email} is Logged In`)).toBeVisible();
+      await page.waitForURL(`${baseURL}/`)
       await expect(page.getByRole('heading', { level: 2 })).toHaveText(constants.headings.todo_list);
     });
 

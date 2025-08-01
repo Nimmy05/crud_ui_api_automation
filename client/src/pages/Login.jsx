@@ -45,7 +45,7 @@ const Login = () => {
       if (!response.ok) {
         toast.error(data.message || "Login failed");
       } else if (data.token) {
-        toast.success(`${userData.email} is Logged In`);
+        // toast.success(`${userData.email} is Logged In`);
         window.localStorage.setItem("token", data.token);
         setTimeout(() => {
           window.location.href = "/";
@@ -137,7 +137,7 @@ const Login = () => {
           </button>
         </form>
       </div>
-      <ToastContainer position="top-right" autoClose="false" />
+      <ToastContainer position="top-right" autoClose={false} />
     </>
   );
 };

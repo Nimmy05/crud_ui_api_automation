@@ -1,6 +1,5 @@
 import { chromium, expect } from '@playwright/test';
 import { constants } from 'globalConfig/constants';
-import { closeAlert } from 'utils/baseUtils';
 import path from 'path';
 import dotenv from 'dotenv';
 
@@ -36,7 +35,7 @@ async function globalSetup() {
   page.getByRole('button', { name: 'Login' }).click()
 
 
-  await closeAlert(page);
+ 
 
 
 
