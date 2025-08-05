@@ -57,36 +57,19 @@ jobs:
 
       - name: Start backend server
         working-directory: server
-        run: |
-          nohup npm run dev &
+        run: nohup npm run dev &
 
       - name: Start frontend server
         working-directory: client
-        run: |
-          nohup npm start &
+        run: nohup npm start &
 
       - name: Wait for backend to be ready
         run: |
           npm install -g wait-on
-          for i in {1..30}; do
-            if wait-on -s http://localhost:3001/api; then
-              echo "✅ Backend is ready"
-              break
-            fi
-            echo "⏳ Waiting for backend..."
-            sleep 2
-          done
+          wait-on http://localhost:3001/api
 
       - name: Wait for frontend to be ready
-        run: |
-          for i in {1..30}; do
-            if wait-on -s http://localhost:3000; then
-              echo "✅ Frontend is ready"
-              break
-            fi
-            echo "⏳ Waiting for frontend..."
-            sleep 2
-          done
+        run: wait-on http://localhost:3000
 
       - name: Install Playwright browsers
         working-directory: client
@@ -94,7 +77,7 @@ jobs:
 
       - name: Run Playwright UI tests
         working-directory: client
-        run: npx playwright test
+        run: npx playwright test --workers=1
 
       - name: Run API tests
         working-directory: server
