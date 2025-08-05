@@ -67,8 +67,9 @@ jobs:
 
       - name: Wait for backend to be ready
         run: |
+          npm install -g wait-on
           for i in {1..30}; do
-            if curl -s http://localhost:3001/api; then
+            if wait-on -s http://localhost:3001/api; then
               echo "✅ Backend is ready"
               break
             fi
@@ -79,7 +80,7 @@ jobs:
       - name: Wait for frontend to be ready
         run: |
           for i in {1..30}; do
-            if curl -s http://localhost:3000; then
+            if wait-on -s http://localhost:3000; then
               echo "✅ Frontend is ready"
               break
             fi
@@ -99,7 +100,7 @@ jobs:
         working-directory: server
         run: npm test
 
-      - name: Upload Playwright report (optional)
+      - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
