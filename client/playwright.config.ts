@@ -11,10 +11,10 @@ export default defineConfig({
   globalTeardown: './global-teardown.ts',
   timeout: 30 * 1000,
   webServer: {
-    command: 'npm run dev',  // or whatever starts your frontend
-    port: 3000,
-    timeout: 120 * 1000,     // wait up to 2 minutes
-    reuseExistingServer: !process.env.CI,  // skip starting if already running locally
+    command: 'npm start', // or any dummy, since we're reusing
+  port: 3000,
+  reuseExistingServer: true, // ✅ Always reuse in CI
+  timeout: 120 * 1000,
   },
   use: {
     baseURL: process.env.REACT_BASE_URL,
