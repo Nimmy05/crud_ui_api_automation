@@ -27,6 +27,9 @@ async function globalSetup() {
   await login.waitFor({ state: "visible" });
   await login.click();
 
+  await page.waitForLoadState('load');
+
+
   await page.waitForURL(`${baseURL}/`)
   await page.waitForLoadState('domcontentloaded');
 
