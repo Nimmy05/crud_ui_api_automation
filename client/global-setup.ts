@@ -25,14 +25,18 @@ async function globalSetup() {
   await password.waitFor({ state: "visible" });
   await password.fill(passwordText);
   await login.waitFor({ state: "visible" });
-  await login.click();
 
-  await page.waitForLoadState('load');
+  await Promise.all([
+    page.waitForURL(`${baseURL}/`), // Wait for expected URL after login
+    login.click(),
+  ]);
 
-
-  await page.waitForURL(`${baseURL}/`)
   await page.waitForLoadState('domcontentloaded');
 
+
+  const currentUrl = await page.url();
+  console.log("Current URL:..................................", currentUrl);
+ 
   const todoList: Locator = page.getByRole('heading', { level: 2 });
   await todoList.waitFor({ state: 'visible', timeout: timeout });
   await expect(todoList).toHaveText(constants.headings.todo_list);
