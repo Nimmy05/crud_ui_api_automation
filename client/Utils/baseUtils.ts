@@ -2,10 +2,10 @@ import 'tsconfig-paths/register';
 import { Locator, Page, expect } from '@playwright/test';
 import { byAriaLabel } from '../utils/locatorUtils';
 
-
 export const button = {
   async clickOnButton(buttonLocator: Locator) {
     await buttonLocator.click();
+
   }
 };
 
@@ -37,11 +37,16 @@ export const resetFormFields = async (
 
 export const closeAlert = async (page: Page) => {
   const closeButton = byAriaLabel(page, 'button', 'close').first();
+ 
+  await closeButton.waitFor({state: 'visible', timeout: 10000})
   await button.clickOnButton(closeButton);
+   await page.waitForLoadState('domcontentloaded');
 };
 
 export const verifyAndCloseAlert = async (page: Page, alertText: string) => {
-  await expect(page.getByText(alertText)).toBeVisible();
+  const alert: Locator = page.getByText(alertText);
+  
+  await alert.waitFor({state:'visible', timeout: 10000});
   await closeAlert(page);
 };
 

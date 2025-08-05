@@ -18,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "playwright test",
+    "test": "playwright test --workers=1",
     "eject": "react-scripts eject",
     "test:e2e": "node -r ts-node/register -r tsconfig-paths/register node_modules/@playwright/test/cli.js",
     "test:setup": "ts-node -r tsconfig-paths/register global-setup.ts",

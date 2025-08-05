@@ -1,19 +1,25 @@
 import 'tsconfig-paths/register';
-import { Page, expect, Locator } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { button, closeAlert, verifyAndCloseAlert, inputField } from '../utils/baseUtils';
 import { constants, timeout } from '../globalConfig/constants';
 import { byButtonTextIs, byInputValue } from '../utils/locatorUtils';
 
 export const createTodo = async (page: Page, todoText: string) => {
     const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
+    const addButton: Locator = byButtonTextIs(page, constants.button_texts.add);
 
-    await expect(inputFieldLocator).toBeVisible();
+    await inputFieldLocator.waitFor({ state: 'visible', timeout: timeout });
     await inputFieldLocator.fill(todoText);
+    await page.waitForLoadState('domcontentloaded');
+    await addButton.waitFor({ state: 'visible', timeout: timeout });
     await button.clickOnButton(byButtonTextIs(page, constants.button_texts.add));
+    await page.waitForLoadState('domcontentloaded');
     await closeAlert(page);
 
     // verify todo item is created
-    await expect(page.locator(`div span:text-is('${todoText}')`)).toBeVisible({ timeout: timeout * 3 });
+    const createToDo: Locator = page.locator(`div span:text-is('${todoText}')`);
+    await createToDo.waitFor({ state: 'visible', timeout: timeout * 3 });
+
 };
 
 export const createMultipleToDo = async (page: Page, todos: string[]) => {
@@ -24,16 +30,21 @@ export const createMultipleToDo = async (page: Page, todos: string[]) => {
 
 
 export const deleteTodo = async (page: Page, todoText: string) => {
-    const deleteButtonLocator = byButtonTextIs(page, constants.button_texts.delete );
+    const deleteButtonLocator = byButtonTextIs(page, constants.button_texts.delete).first();
 
-    await expect(deleteButtonLocator).toBeVisible();
+    await deleteButtonLocator.waitFor({ state: 'visible', timeout: timeout });
     await deleteButtonLocator.click();
+
     await page.waitForLoadState('networkidle');
-    await expect(page.getByText(`Todo "${todoText}" has been deleted`)).toBeVisible({ timeout: timeout * 3 });
+
+    const deletetedItem: Locator = page.getByText(`Todo "${todoText}" has been deleted`);
+    await deletetedItem.waitFor({ state: 'visible', timeout: timeout * 3 });
+
     await closeAlert(page);
 
-    // verify todo item is deleted
-    await expect(page.locator(`div span:text-is('${todoText}')`)).not.toBeVisible();
+    // Verify todo item is deleted
+    const deleteItem: Locator = page.locator(`div span:text-is("${todoText}")`);
+    await deleteItem.waitFor({ state: 'hidden', timeout: timeout });
 };
 
 export const deleteAllTodos = async (page: Page) => {
@@ -43,32 +54,43 @@ export const deleteAllTodos = async (page: Page) => {
         const button = deleteButtons.first();
         const todoText = await button.locator('..').locator('span').innerText();
 
-        await expect(button).toBeVisible();
+        await button.waitFor({ state: 'visible', timeout: timeout });
+        await button.waitFor({ state: 'visible', timeout: timeout });
         await button.click();
-        await expect(page.getByText(`Todo "${todoText}" has been deleted`)).toBeVisible({ timeout: timeout * 3 });
+        await page.waitForLoadState('domcontentloaded');
+
+        const deleteText: Locator = page.getByText(`Todo "${todoText}" has been deleted`);
+        await deleteText.waitFor({ state: 'visible', timeout: timeout });
+
         await closeAlert(page);
-
-        await expect(page.locator(`span:text-is("${todoText}")`)).not.toBeVisible();
-
-        deleteButtons = page.getByRole('button', { name: constants.button_texts.delete });
+        await page.waitForLoadState('domcontentloaded');
+        const removeItem: Locator = page.locator(`span:text-is("${todoText}")`);
+        await removeItem.waitFor({ state: 'hidden', timeout: timeout });
     }
-
-    await expect(page.getByText(constants.alert_texts.no_todos)).toBeVisible({ timeout: timeout * 3 });
+    const deleteItem: Locator = page.getByText(constants.alert_texts.no_todos);
+    await deleteItem.waitFor({ state: 'visible', timeout: timeout });
 };
 
 
 export const updateTodoAndAssert = async (page: Page, newToDoItem: string, updateToDoItem: string) => {
-    const editButtonLocator = byButtonTextIs(page, constants.button_texts.edit);
+    const editButtonLocator = byButtonTextIs(page, constants.button_texts.edit).first();
     const saveButtonLocator: Locator = byButtonTextIs(page, constants.button_texts.save);
 
+    await editButtonLocator.waitFor({ state: 'visible', timeout: timeout });
     await editButtonLocator.click();
-    await expect(byInputValue(page, newToDoItem)).toBeVisible();
+    await page.waitForLoadState('domcontentloaded');
+    const prompt: Locator = byInputValue(page, newToDoItem);
+    await prompt.waitFor({ state: 'visible', timeout: timeout * 2 });
     await inputField.fill(byInputValue(page, newToDoItem), updateToDoItem);
-    await expect(saveButtonLocator).toBeVisible();
+    await page.waitForLoadState('domcontentloaded');
+    await saveButtonLocator.waitFor({ state: 'visible', timeout: timeout });
     await saveButtonLocator.click();
+    await page.waitForLoadState('networkidle');
     await verifyAndCloseAlert(page, `Todo updated to "${updateToDoItem}"`);
-    await expect(page.locator(`span:text-is("${updateToDoItem}")`)).toBeVisible({ timeout: timeout * 3 });
-    await expect(page.locator(`span:text-is("${newToDoItem}")`)).not.toBeVisible();
+    const updatedItem: Locator = page.locator(`span:text-is("${updateToDoItem}")`);
+    await updatedItem.waitFor({ state: 'visible', timeout: timeout * 3 });
+    const notToSeeUpdatedItem: Locator = page.locator(`span:text-is("${newToDoItem}")`);
+    await notToSeeUpdatedItem.waitFor({ state: 'hidden', timeout: timeout * 3 });
 };
 
 export const updateAllTodosAndAssert = async (page: Page, updatedPrefix: string) => {
@@ -84,16 +106,21 @@ export const updateAllTodosAndAssert = async (page: Page, updatedPrefix: string)
         const updateFieldLocator: Locator = page.locator(`input[value="${oldValue}"]`);
         const saveButton = byButtonTextIs(page, constants.button_texts.save);
 
-        await expect(editButton).toBeVisible();
+        await editButton.waitFor({ state: 'visible', timeout: timeout });
         await editButton.click();
-        await expect(updateFieldLocator).toBeVisible();
+        await page.waitForLoadState('domcontentloaded');
+        await updateFieldLocator.waitFor({ state: 'visible', timeout: timeout });
         await updateFieldLocator.fill(newValue);
-        await expect(saveButton).toBeVisible();
+        await page.waitForLoadState('domcontentloaded');
+        await saveButton.waitFor({ state: 'visible', timeout: timeout });
         await saveButton.click();
+        await page.waitForLoadState('networkidle');
         await verifyAndCloseAlert(page, `Todo updated to "${newValue}"`);
 
-        // Verify updated and old values in DOM
-        await expect(page.locator(`span:text-is("${newValue}")`)).toBeVisible({ timeout: timeout * 3 });
-        await expect(page.locator(`span:text-is("${oldValue}")`)).not.toBeVisible();
+        const updatedItem: Locator = page.locator(`span:text-is("${newValue}")`);
+        await updatedItem.waitFor({ state: 'visible', timeout: timeout });
+        const removeItems: Locator = page.locator(`span:text-is("${oldValue}")`);
+        await removeItems.waitFor({ state: 'hidden', timeout: timeout });
+    
     }
 };

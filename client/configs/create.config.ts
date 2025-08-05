@@ -1,8 +1,6 @@
-import { generateToDo, generateSecondToDo } from '../utils/formDataGenerators';
-
 const thisTestConfig = {
-  new_todo: "firsttodo_create_" + generateToDo(),
-  second_todo: "secondtodo_create_" + generateSecondToDo(),
+  new_todo: "first_todo_create",
+  second_todo: "second_todo_create",
 };
 
 export default thisTestConfig;

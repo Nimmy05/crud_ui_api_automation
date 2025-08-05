@@ -1,9 +1,8 @@
-import { chromium, expect } from '@playwright/test';
+import { chromium, expect, Locator } from '@playwright/test';
 import { constants } from 'globalConfig/constants';
 import path from 'path';
 import dotenv from 'dotenv';
 
-// Load environment variables from .env
 dotenv.config();
 
 async function globalSetup() {
@@ -11,34 +10,27 @@ async function globalSetup() {
   const context = await browser.newContext();
   const page = await context.newPage();
 
-  const baseURL = process.env.BASE_URL || 'http://localhost:3000';
-  const email = process.env.TEST_USER_EMAIL || 'test67@gmail.com';
-  const password = process.env.TEST_USER_PASSWORD || 'abc123';
+  const baseURL = process.env.REACT_BASE_URL || 'http://localhost:3000';
+  const emailText = process.env.USER_EMAIL || 'test67@gmail.com';
+  const passwordText = process.env.USER_PASSWORD || 'abc123';
 
   await page.goto(`${baseURL}/login`);
 
-  await page.getByRole('textbox', { name: 'Email' }).fill(email);
-  await page.getByRole('textbox', { name: 'Password' }).fill(password);
-  // await page.getByRole('button', { name: 'Login' }).click();
+  const email: Locator = page.locator(`input[type='email']`);
+  const password: Locator = page.locator(`input[type='password']`);
+  const login: Locator = page.locator(`button[type='submit']`);
 
-//   // 🟡 Option 1: Wait for a success toast (react-toastify)
-//   const successToast = page.locator('.Toastify__toast--success');
-//   if (await successToast.isVisible({ timeout: 5000 })) {
-//   await successToast.waitFor({ state: 'detached', timeout: 10000 }); // wait until it disappears
-// }
+  await email.waitFor({state: "visible"});
+  await email.fill(emailText);
+  await password.waitFor({state: "visible"});
+  await password.fill(passwordText);
+  await login.waitFor({state: "visible"});
+  await login.click();
 
-//   // ✅ Ensure that dashboard is loaded (adjust as per your app)
-//    const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
-//   await expect(inputFieldLocator).toBeVisible();
-
-  await page.getByRole('button', { name: 'Login' }).click();
+  await page.waitForLoadState('domcontentloaded');
+  await expect(page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`)).toBeVisible({ timeout: 10000 });
 
 
-// ✅ Wait for input field to appear
-const inputFieldLocator = page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`);
-await expect(inputFieldLocator).toBeVisible({ timeout: 10000 });
-
-  // ✅ Save login state
   const storagePath = path.resolve(__dirname, './storage/storageState.json');
   await context.storageState({ path: storagePath });
 

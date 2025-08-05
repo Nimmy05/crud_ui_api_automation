@@ -5,12 +5,15 @@ import { createTodo, deleteAllTodos, deleteTodo, createMultipleToDo } from '../u
 import thisTestConfig from '../configs/create.config';
 
 test.describe(`Automate the 'Delete' functionality of  'MERN Todo App'`, () => {
-    test.beforeEach(async ({ page }) => {
-        await page.goto(`${baseURL}/`);
-    });
-    test(`Should delete the ToDo Item`, async ({ page }) => {
+
+    test(`@Authenticated Should delete the ToDo Item`, async ({ page }) => {
         const newToDoItem: string = thisTestConfig.new_todo;
-        
+
+        await test.step(`Redirect to the Home`, async () => {
+            await page.goto(`${baseURL}/`);
+            await page.waitForLoadState('domcontentloaded');
+        });
+
         await test.step(`Verify the heading '${constants.headings.todo_list}' is visible`, async () => {
             await expect(page.getByRole('heading', { level: 2 })).toHaveText(constants.headings.todo_list);
         });
@@ -31,6 +34,7 @@ test.describe(`Automate the 'Delete' functionality of  'MERN Todo App'`, () => {
         await test.step(`Delete all the todo items from the list`, async () => {
             await deleteAllTodos(page);
         });
+
 
     });
 });

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [userData, setUserData] = useState({ email: "", password: "" });
+    const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -41,6 +43,7 @@ const Login = () => {
       });
 
       const data = await response.json();
+    
 
       if (!response.ok) {
         toast.error(data.message || "Login failed");
@@ -49,6 +52,7 @@ const Login = () => {
         window.localStorage.setItem("token", data.token);
         setTimeout(() => {
           window.location.href = "/";
+          // navigate("/");
         }, 1500);
       }
     } catch (error) {

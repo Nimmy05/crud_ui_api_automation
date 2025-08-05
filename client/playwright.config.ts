@@ -17,7 +17,7 @@ export default defineConfig({
   projects: [
     {
       name: 'Authenticated Tests',
-      grepInvert: /@noLogin/,
+      grep: /@Authenticated/,
       use: {
         storageState: './storage/storageState.json',
       },

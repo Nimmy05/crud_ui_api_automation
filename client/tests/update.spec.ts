@@ -1,16 +1,22 @@
 import 'tsconfig-paths/register';
-import { test } from '@playwright/test';
-import { baseURL } from '../globalConfig/constants';
+import { test, expect } from '@playwright/test';
+import { baseURL, constants } from '../globalConfig/constants';
 import { createTodo, deleteAllTodos, updateAllTodosAndAssert, updateTodoAndAssert } from '../utils/todoActions';
 import thisTestConfig from '../configs/update.config';
 
 test.describe(`Automate the 'Update ToDo' of 'MERN Todo App'`, () => {
-    test.beforeEach(async ({ page }) => {
-        await page.goto(`${baseURL}/`);
-    });
 
-    test(`Should 'Update' the ToDo Item`, async ({ page }) => {
+    test(`@Authenticated Should 'Update' the ToDo Item`, async ({ page }) => {
         const { new_todo, update_todo, update_existing, update_todo_prefix } = thisTestConfig;
+
+        await test.step(`Redirect to the Home`, async () => {
+            await page.goto(`${baseURL}/`);
+            await page.waitForLoadState('domcontentloaded');
+        });
+
+        await test.step(`Verify the heading '${constants.headings.todo_list}' is visible`, async () => {
+            await expect(page.getByRole('heading', { level: 2 })).toHaveText(constants.headings.todo_list);
+        });
 
         await test.step(`Clean up - delete all todos`, async () => {
             await deleteAllTodos(page);
@@ -33,5 +39,6 @@ test.describe(`Automate the 'Update ToDo' of 'MERN Todo App'`, () => {
         await test.step(`Clean up - delete all todos`, async () => {
             await deleteAllTodos(page);
         });
+
     });
 });
