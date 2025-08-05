@@ -1,5 +1,5 @@
 import { chromium, expect, Locator } from '@playwright/test';
-import { constants } from 'globalConfig/constants';
+import { constants, timeout } from 'globalConfig/constants';
 import path from 'path';
 import dotenv from 'dotenv';
 
@@ -20,16 +20,19 @@ async function globalSetup() {
   const password: Locator = page.locator(`input[type='password']`);
   const login: Locator = page.locator(`button[type='submit']`);
 
-  await email.waitFor({state: "visible"});
+  await email.waitFor({ state: "visible" });
   await email.fill(emailText);
-  await password.waitFor({state: "visible"});
+  await password.waitFor({ state: "visible" });
   await password.fill(passwordText);
-  await login.waitFor({state: "visible"});
+  await login.waitFor({ state: "visible" });
   await login.click();
 
+  await page.waitForURL(`${baseURL}/`)
   await page.waitForLoadState('domcontentloaded');
-  await expect(page.locator(`input[placeholder='${constants.place_holder_texts.new_to_do}']`)).toBeVisible({ timeout: 10000 });
 
+  const todoList: Locator = page.getByRole('heading', { level: 2 });
+  await todoList.waitFor({ state: 'visible', timeout: timeout });
+  await expect(todoList).toHaveText(constants.headings.todo_list);
 
   const storagePath = path.resolve(__dirname, './storage/storageState.json');
   await context.storageState({ path: storagePath });
