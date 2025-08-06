@@ -57,19 +57,25 @@ jobs:
 
       - name: Start backend server
         working-directory: server
-        run: nohup npm run dev &
+        run: nohup npm run dev > backend.log 2>&1 &
+
+      - name: Wait for backend to be fully ready
+        run: |
+          npm install -g wait-on
+          wait-on http://localhost:3001/api/todos
+
+      - name: Show backend logs (for debugging if needed)
+        run: cat server/backend.log || true
 
       - name: Start frontend server
         working-directory: client
-        run: nohup npm start &
-
-      - name: Wait for backend to be ready
-        run: |
-          npm install -g wait-on
-          wait-on http://localhost:3001/api
+        run: nohup npm start > frontend.log 2>&1 &
 
       - name: Wait for frontend to be ready
         run: wait-on http://localhost:3000
+
+      - name: Show frontend logs (for debugging if needed)
+        run: cat client/frontend.log || true
 
       - name: Install Playwright browsers
         working-directory: client
