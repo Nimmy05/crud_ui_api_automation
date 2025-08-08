@@ -27,7 +27,7 @@ async function globalSetup() {
   await login.waitFor({ state: "visible" });
 
   await Promise.all([
-    page.waitForURL(`${baseURL}/`), // Wait for expected URL after login
+    page.waitForURL(`${baseURL}/`), 
     login.click(),
   ]);
 
